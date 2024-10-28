@@ -1,0 +1,13 @@
+[package]
+name = "solswag"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = { version = "1" }
+serde_derive = "1"
+serde_json = "1"
+anyhow = "1.0.90"
+
+openapiv3 = { git = "https://github.com/glademiller/openapiv3" }
+indexmap = "2.6.0"

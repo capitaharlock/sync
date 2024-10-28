@@ -1,0 +1,241 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Solana Program Documentation",
+    "version": "1.0"
+  },
+  "paths": {
+    "addConfigLines": {
+      "description": "Addtheconfiguration(name+uri)ofeachNFTtotheaccountdata.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount\n1.`[signer]`CandyMachineauthority",
+      "post": {
+        "description": "Addtheconfiguration(name+uri)ofeachNFTtotheaccountdata.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount\n1.`[signer]`CandyMachineauthority",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "index",
+            "description": "",
+            "required": true,
+            "schema": {
+              "title": "u32",
+              "description": "",
+              "type": "boolean",
+              "enum": [
+                false
+              ]
+            },
+            "explode": false,
+            "style": "form",
+            "allowEmptyValue": false
+          },
+          {
+            "in": "query",
+            "name": "configLines",
+            "description": "",
+            "required": true,
+            "schema": {
+              "title": "Vec<ConfigLine>",
+              "description": "",
+              "type": "boolean",
+              "enum": [
+                false
+              ]
+            },
+            "explode": false,
+            "style": "form",
+            "allowEmptyValue": false
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "initialize": {
+      "description": "Initializethecandymachineaccountwiththespecifieddata.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[writable]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n2.`[]`CandyMachineauthority\n3.`[signer]`Payer\n4.`[]`Collectionmetadata\n5.`[]`Collectionmint\n6.`[]`Collectionmasteredition\n7.`[signer]`Collectionupdateauthority\n8.`[writable]`Collectionauthorityrecord\n9.`[]`TokenMetadataprogram\n10.`[]`Systemprogram",
+      "post": {
+        "description": "Initializethecandymachineaccountwiththespecifieddata.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[writable]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n2.`[]`CandyMachineauthority\n3.`[signer]`Payer\n4.`[]`Collectionmetadata\n5.`[]`Collectionmint\n6.`[]`Collectionmasteredition\n7.`[signer]`Collectionupdateauthority\n8.`[writable]`Collectionauthorityrecord\n9.`[]`TokenMetadataprogram\n10.`[]`Systemprogram",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "data",
+            "description": "",
+            "required": true,
+            "schema": {
+              "title": "CandyMachineData",
+              "description": "",
+              "type": "boolean",
+              "enum": [
+                false
+              ]
+            },
+            "explode": false,
+            "style": "form",
+            "allowEmptyValue": false
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "initializeV2": {
+      "description": "Initializethecandymachineaccountwiththespecifieddataandtokenstandard.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[writable]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n2.`[]`CandyMachineauthority\n3.`[signer]`Payer\n4.`[]`Collectionmetadata\n5.`[]`Collectionmint\n6.`[]`Collectionmasteredition\n7.`[signer]`Collectionupdateauthority\n8.`[writable]`Collectionmetadatadelegaterecord\n9.`[]`TokenMetadataprogram\n10.`[]`Systemprogram\n11.`[]`Instructionssysvaraccount\n12.`[optional]`TokenAuthorizationRulesprogram\n13.`[optional]`Tokenauthorizationrulesaccount",
+      "post": {
+        "description": "Initializethecandymachineaccountwiththespecifieddataandtokenstandard.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[writable]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n2.`[]`CandyMachineauthority\n3.`[signer]`Payer\n4.`[]`Collectionmetadata\n5.`[]`Collectionmint\n6.`[]`Collectionmasteredition\n7.`[signer]`Collectionupdateauthority\n8.`[writable]`Collectionmetadatadelegaterecord\n9.`[]`TokenMetadataprogram\n10.`[]`Systemprogram\n11.`[]`Instructionssysvaraccount\n12.`[optional]`TokenAuthorizationRulesprogram\n13.`[optional]`Tokenauthorizationrulesaccount",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "data",
+            "description": "",
+            "required": true,
+            "schema": {
+              "title": "CandyMachineData",
+              "description": "",
+              "type": "boolean",
+              "enum": [
+                false
+              ]
+            },
+            "explode": false,
+            "style": "form",
+            "allowEmptyValue": false
+          },
+          {
+            "in": "query",
+            "name": "tokenStandard",
+            "description": "",
+            "required": true,
+            "schema": {
+              "title": "u8",
+              "description": "",
+              "type": "boolean",
+              "enum": [
+                false
+              ]
+            },
+            "explode": false,
+            "style": "form",
+            "allowEmptyValue": false
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "mint": {
+      "description": "MintanNFT.\n\nOnlythecandymachinemintauthorityisallowedtomint.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[writable]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n2.`[signer]`CandyMachinemintauthority\n3.`[signer]`Payer\n4.`[writable]`MintaccountoftheNFT\n5.`[signer]`MintauthorityoftheNFT\n6.`[writable]`MetadataaccountoftheNFT\n7.`[writable]`MastereditionaccountoftheNFT\n8.`[optional]`Collectionauthorityrecord\n9.`[]`Collectionmint\n10.`[writable]`Collectionmetadata\n11.`[]`Collectionmasteredition\n12.`[]`Collectionupdateauthority\n13.`[]`TokenMetadataprogram\n14.`[]`SPLTokenprogram\n15.`[]`Systemprogram\n16.`[]`SlotHashessysvarclusterdata.",
+      "post": {
+        "description": "MintanNFT.\n\nOnlythecandymachinemintauthorityisallowedtomint.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[writable]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n2.`[signer]`CandyMachinemintauthority\n3.`[signer]`Payer\n4.`[writable]`MintaccountoftheNFT\n5.`[signer]`MintauthorityoftheNFT\n6.`[writable]`MetadataaccountoftheNFT\n7.`[writable]`MastereditionaccountoftheNFT\n8.`[optional]`Collectionauthorityrecord\n9.`[]`Collectionmint\n10.`[writable]`Collectionmetadata\n11.`[]`Collectionmasteredition\n12.`[]`Collectionupdateauthority\n13.`[]`TokenMetadataprogram\n14.`[]`SPLTokenprogram\n15.`[]`Systemprogram\n16.`[]`SlotHashessysvarclusterdata.",
+        "responses": {}
+      }
+    },
+    "mintV2": {
+      "description": "MintanNFT.\n\nOnlythecandymachinemintauthorityisallowedtomint.Thishandlermintsboth\nNFTsandProgrammableNFTs.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[writable]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n2.`[signer]`CandyMachinemintauthority\n3.`[signer]`Payer\n4.`[writable]`MintaccountoftheNFT\n5.`[]`MintauthorityoftheNFT\n6.`[writable]`MetadataaccountoftheNFT\n7.`[writable]`MastereditionaccountoftheNFT\n8.`[optional,writable]`Destinationtokenaccount\n9.`[optional,writable]`Tokenrecord\n10.`[]`Collectiondelegateorauthorityrecord\n11.`[]`Collectionmint\n12.`[writable]`Collectionmetadata\n13.`[]`Collectionmasteredition\n14.`[]`Collectionupdateauthority\n15.`[]`TokenMetadataprogram\n16.`[]`SPLTokenprogram\n17.`[optional]`SPLAssociatedTokenprogram\n18.`[]`Systemprogram\n19.`[optional]`Instructionssysvaraccount\n20.`[]`SlotHashessysvarclusterdata.",
+      "post": {
+        "description": "MintanNFT.\n\nOnlythecandymachinemintauthorityisallowedtomint.Thishandlermintsboth\nNFTsandProgrammableNFTs.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[writable]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n2.`[signer]`CandyMachinemintauthority\n3.`[signer]`Payer\n4.`[writable]`MintaccountoftheNFT\n5.`[]`MintauthorityoftheNFT\n6.`[writable]`MetadataaccountoftheNFT\n7.`[writable]`MastereditionaccountoftheNFT\n8.`[optional,writable]`Destinationtokenaccount\n9.`[optional,writable]`Tokenrecord\n10.`[]`Collectiondelegateorauthorityrecord\n11.`[]`Collectionmint\n12.`[writable]`Collectionmetadata\n13.`[]`Collectionmasteredition\n14.`[]`Collectionupdateauthority\n15.`[]`TokenMetadataprogram\n16.`[]`SPLTokenprogram\n17.`[optional]`SPLAssociatedTokenprogram\n18.`[]`Systemprogram\n19.`[optional]`Instructionssysvaraccount\n20.`[]`SlotHashessysvarclusterdata.",
+        "responses": {}
+      }
+    },
+    "setAuthority": {
+      "description": "Setanewauthorityofthecandymachine.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount\n1.`[signer]`CandyMachineauthority",
+      "post": {
+        "description": "Setanewauthorityofthecandymachine.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount\n1.`[signer]`CandyMachineauthority",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "newAuthority",
+            "description": "",
+            "required": true,
+            "schema": {
+              "title": "pubkey",
+              "description": "",
+              "type": "boolean",
+              "enum": [
+                false
+              ]
+            },
+            "explode": false,
+            "style": "form",
+            "allowEmptyValue": false
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "setCollection": {
+      "description": "Setthecollectionmintforthecandymachine.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[signer]`CandyMachineauthority\n2.`[]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n3.`[signer]`Payer\n4.`[]`Collectionmint\n5.`[]`Collectionmetadata\n6.`[writable]`Collectionauthorityrecord\n7.`[signer]`Newcollectionupdateauthority\n8.`[]`Collectionmetadata\n9.`[]`Collectionmint\n10.`[]`Newcollectionmasteredition\n11.`[]`Newcollectionauthorityrecord\n12.`[]`TokenMetadataprogram\n13.`[]`Systemprogram",
+      "post": {
+        "description": "Setthecollectionmintforthecandymachine.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[signer]`CandyMachineauthority\n2.`[]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n3.`[signer]`Payer\n4.`[]`Collectionmint\n5.`[]`Collectionmetadata\n6.`[writable]`Collectionauthorityrecord\n7.`[signer]`Newcollectionupdateauthority\n8.`[]`Collectionmetadata\n9.`[]`Collectionmint\n10.`[]`Newcollectionmasteredition\n11.`[]`Newcollectionauthorityrecord\n12.`[]`TokenMetadataprogram\n13.`[]`Systemprogram",
+        "responses": {}
+      }
+    },
+    "setCollectionV2": {
+      "description": "Setthecollectionmintforthecandymachine.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[signer]`CandyMachineauthority\n2.`[]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n3.`[signer]`Payer\n4.`[]`Collectionupdateauthority\n5.`[]`Collectionmint\n6.`[]`Collectionmetadata\n7.`[optional,writable]`Metadatadelegaterecord\n8.`[optional,writable]`Collectionauthorityrecord\n9.`[signer]`Newcollectionupdateauthority\n10.`[]`Newcollectionmint\n11.`[]`Newcollectionmetadata\n12.`[]`Newcollectionmasteredition\n13.`[writable]`Newcollectionmetadatadelegaterecord\n14.`[]`TokenMetadataprogram\n15.`[]`Systemprogram\n16.`[]`Instructionssysvaraccount\n17.`[optional]`TokenAuthorizationRulesprogram\n18.`[optional]`Tokenauthorizationrulesaccount",
+      "post": {
+        "description": "Setthecollectionmintforthecandymachine.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[signer]`CandyMachineauthority\n2.`[]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n3.`[signer]`Payer\n4.`[]`Collectionupdateauthority\n5.`[]`Collectionmint\n6.`[]`Collectionmetadata\n7.`[optional,writable]`Metadatadelegaterecord\n8.`[optional,writable]`Collectionauthorityrecord\n9.`[signer]`Newcollectionupdateauthority\n10.`[]`Newcollectionmint\n11.`[]`Newcollectionmetadata\n12.`[]`Newcollectionmasteredition\n13.`[writable]`Newcollectionmetadatadelegaterecord\n14.`[]`TokenMetadataprogram\n15.`[]`Systemprogram\n16.`[]`Instructionssysvaraccount\n17.`[optional]`TokenAuthorizationRulesprogram\n18.`[optional]`Tokenauthorizationrulesaccount",
+        "responses": {}
+      }
+    },
+    "setMintAuthority": {
+      "description": "Setanewmintauthorityofthecandymachine.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount\n1.`[signer]`CandyMachineauthority\n1.`[signer]`Newcandymachineauthority",
+      "post": {
+        "description": "Setanewmintauthorityofthecandymachine.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount\n1.`[signer]`CandyMachineauthority\n1.`[signer]`Newcandymachineauthority",
+        "responses": {}
+      }
+    },
+    "setTokenStandard": {
+      "description": "SetthetokenstandardofthemintedNFTs.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[signer]`CandyMachineauthority\n2.`[]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n3.`[signer]`Payer\n4.`[optional,writable]`Metadatadelegaterecord\n5.`[]`Collectionmint\n6.`[]`Collectionmetadata\n7.`[optional,writable]`Collectionauthorityrecord\n8.`[]`Collectionupdateauthority\n9.`[]`TokenMetadataprogram\n10.`[]`Systemprogram\n11.`[]`Instructionssysvaraccount\n12.`[optional]`TokenAuthorizationRulesprogram\n13.`[optional]`Tokenauthorizationrulesaccount",
+      "post": {
+        "description": "SetthetokenstandardofthemintedNFTs.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount(mustbepre-allocatedbutzerocontent)\n1.`[signer]`CandyMachineauthority\n2.`[]`AuthorityPDA(seeds`[\"candy_machine\",candymachineid]`)\n3.`[signer]`Payer\n4.`[optional,writable]`Metadatadelegaterecord\n5.`[]`Collectionmint\n6.`[]`Collectionmetadata\n7.`[optional,writable]`Collectionauthorityrecord\n8.`[]`Collectionupdateauthority\n9.`[]`TokenMetadataprogram\n10.`[]`Systemprogram\n11.`[]`Instructionssysvaraccount\n12.`[optional]`TokenAuthorizationRulesprogram\n13.`[optional]`Tokenauthorizationrulesaccount",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "tokenStandard",
+            "description": "",
+            "required": true,
+            "schema": {
+              "title": "u8",
+              "description": "",
+              "type": "boolean",
+              "enum": [
+                false
+              ]
+            },
+            "explode": false,
+            "style": "form",
+            "allowEmptyValue": false
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "update": {
+      "description": "Updatethecandymachineconfiguration.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount\n1.`[signer]`CandyMachineauthority",
+      "post": {
+        "description": "Updatethecandymachineconfiguration.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount\n1.`[signer]`CandyMachineauthority",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "data",
+            "description": "",
+            "required": true,
+            "schema": {
+              "title": "CandyMachineData",
+              "description": "",
+              "type": "boolean",
+              "enum": [
+                false
+              ]
+            },
+            "explode": false,
+            "style": "form",
+            "allowEmptyValue": false
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "withdraw": {
+      "description": "Withdrawtherentlamportsandsendthemtotheauthorityaddress.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount\n1.`[signer]`CandyMachineauthority",
+      "post": {
+        "description": "Withdrawtherentlamportsandsendthemtotheauthorityaddress.\n\n#Accounts\n\n0.`[writable]`CandyMachineaccount\n1.`[signer]`CandyMachineauthority",
+        "responses": {}
+      }
+    }
+  }
+}

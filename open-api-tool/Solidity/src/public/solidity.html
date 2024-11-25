@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Swagger UI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.css" />
+</head>
+
+<body>
+    <div id="swagger-ui"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.js"></script>
+    <script src="/public/components.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.min.js"></script> <!-- ethers.js library -->
+
+    <script>
+        console.log("Initializing Swagger UI");
+
+        const WalletHeaderPlugin = () => {
+            return {
+                components: {
+                    WalletHeaderLayout: WalletHeaderLayout
+                }
+            }
+        }
+
+        async function fetchJson(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching JSON:', error);
+                return null;
+            }
+        }
+
+        // Helper function to decode the result based on ABI
+        function decodeResult(abi, functionName, data) {
+            try {
+                const iface = new window.Interface(abi);
+                const decodedData = iface.decodeFunctionResult(functionName, data);
+                return decodedData.map(value => {
+                    if (typeof value === "bigint") {
+                        return value.toString();  // Convert BigNumber to decimal string
+                    }
+                    return value;
+                });
+            } catch (error) {
+                console.error("Error decoding data:", error);
+                return { error: "Decoding error", message: error.message };
+            }
+        }
+
+        function createResponse(result = null, error = null, url = "https://mainnet.infura.io", status = 200, duration = 123) {
+            return {
+                status,
+                headers: { "content-type": "application/json" },
+                url,
+                ok: error === null,
+                notDocumented: false,
+                error: error !== null,
+                err: error ? {
+                    name: error.name || "Error",
+                    message: error.message || "An error occurred",
+                    statusCode: error.statusCode || status
+                } : null,
+                text: JSON.stringify(error ? { message: error.message } : { result }),
+                duration
+            };
+        }
+
+        const SolidityPlugin = () => {
+            return {
+                fn: {
+                    execute: async (req) => {
+                        try {
+                            if (window.etherProvider) {
+                                const provider = window.etherProvider;
+                                const signer = await provider.getSigner();
+                                const swaggerDocument = await fetchJson("/openapi.json");
+
+                                const to = req.parameters['query.contractAddress'];
+
+                                if (!to) {
+                                    throw new Error('Missing required parameters: contractAddress or address');
+                                }
+
+                                const paramValues = [];
+                                for (const [key, value] of Object.entries(req.parameters)) {
+                                    if (['query.contractAddress', 'query.from', 'query.gas', 'query.gasPrice', 'query.value'].includes(key)) continue;
+                                    paramValues.push(value);
+                                }
+
+                                const pathAbi = [JSON.parse(swaggerDocument.paths[req.pathName]["x-abi"])];
+                                const iface = new window.Interface(pathAbi);
+                                const data = iface.encodeFunctionData(req.pathName.replace("/", ""), paramValues);
+
+                                const tx = { to, data };
+                                const isReadOnly = swaggerDocument.paths[req.pathName]["x-read-only"] || false;
+
+                                if (isReadOnly) {
+                                    const result = await provider.send("eth_call", [tx, "latest"]);
+                                    const decodedResult = decodeResult(pathAbi, req.pathName.replace("/", ""), result);
+                                    return createResponse(decodedResult);
+                                } else {
+                                    const response = await signer.sendTransaction(tx);
+                                    const receipt = await response.wait();
+                                    const decodedResult = decodeResult(pathAbi, req.pathName.replace("/", ""), receipt.logs[0].data);
+                                    return createResponse(decodedResult);
+                                }
+                            } else {
+                                console.log("Wallet provider not connected.");
+                                return createResponse(null, {
+                                    name: "Provider not connected",
+                                    message: "Provider not connected",
+                                    statusCode: 500
+                                });
+                            }
+                        } catch (error) {
+                            console.error("Error executing provider request:", error);
+                            return createResponse(null, {
+                                name: error.name,
+                                message: error.message,
+                                statusCode: 500
+                            });
+                        }
+                    }
+                }
+            };
+        };
+
+        const ui = SwaggerUIBundle({
+            url: "/openapi.json",
+            dom_id: '#swagger-ui',
+            showMutatedRequest: false,
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+            ],
+            plugins: [
+                SolidityPlugin, WalletHeaderPlugin
+            ],
+            layout: "WalletHeaderLayout"
+        });
+
+        window.ui = ui;
+        console.log("Swagger UI initialized");
+    </script>
+</body>
+
+</html>

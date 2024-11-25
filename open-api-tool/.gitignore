@@ -28,6 +28,9 @@ build/Release
 # Dependency directory
 node_modules
 
+openapi*.json
+components.js
+
 cache
 out
 
@@ -41,3 +44,4 @@ typings/
 lib/*.js
 test/*.js
 *.map
+target

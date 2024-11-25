@@ -19,9 +19,7 @@ pub fn load_idl(filename: &str) -> anyhow::Result<Idl> {
 }
 
 fn pre_process_json(json: &str) -> anyhow::Result<String> {
-    let mut json = json.to_string();
-    // 1. minify
-    json.retain(|c| !c.is_whitespace());
+    let json = json.to_string();
 
     // 2. Load as Value
     let mut value: serde_json::Value = serde_json::from_str(&json)?;

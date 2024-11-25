@@ -7,6 +7,7 @@ export interface FunctionDefinition {
   natspec: string;
   devdoc?: { params?: Record<string, string>; returns?: string };
   abi: string;
+  isView: boolean; // New property to indicate if the function is a view function
 }
 
 // Read the Forge-generated artifact and parse the ABI along with devdoc
@@ -26,6 +27,7 @@ export function parseForgeArtifact(artifactPath: string): FunctionDefinition[] {
       const devdocMethod = devdoc?.methods[`${func.name}(${func.inputs.map((input: any) => input.type).join(',')})`] || {};
       const devdocParams = devdocMethod?.params || {};
       const devdocReturns = devdocMethod?.returns?._0 || '';
+      const isView = func.stateMutability === 'view' || func.stateMutability === 'pure';
 
       // Extract NatSpec description
       const natspecDescription = userdoc?.methods[`${func.name}(${func.inputs.map((input: any) => input.type).join(',')})`]?.notice || '';
@@ -44,6 +46,7 @@ export function parseForgeArtifact(artifactPath: string): FunctionDefinition[] {
         natspec: natspecDescription,
         devdoc: { params: devdocParams, returns: devdocReturns },
         abi: JSON.stringify(func),
+        isView
       };
     });
 

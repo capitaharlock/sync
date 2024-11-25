@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Swagger UI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.css" />
+</head>
+
+<body>
+    <div id="swagger-ui"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.js"></script>
+    <script src="/public/components.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/12.0.0/stellar-sdk.js"></script>
+
+
+    <script>
+        console.log("Initializing Swagger UI");
+
+        const WalletHeaderPlugin = () => {
+            return {
+                components: {
+                    StellarWalletHeaderLayout: StellarWalletHeaderLayout
+                }
+            }
+        }
+
+        async function fetchJson(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching JSON:', error);
+                return null;
+            }
+        }
+
+
+        function createResponse(result = null, error = null, url = "https://mainnet.infura.io", status = 200, duration = 123) {
+            return {
+                status,
+                headers: { "content-type": "application/json" },
+                url,
+                ok: error === null,
+                notDocumented: false,
+                error: error !== null,
+                err: error ? {
+                    name: error.name || "Error",
+                    message: error.message || "An error occurred",
+                    statusCode: error.statusCode || status
+                } : null,
+                text: JSON.stringify(error ? { message: error.message } : result),
+                duration
+            };
+        }
+
+
+        async function signTx(xdr, network) {
+            const { signedTxXdr, signerAddress } = await window.stellarKit.signTransaction(xdr);
+            const tx = TransactionBuilder.fromXDR(signedTxXdr, network);
+        }
+        function scResponseToNative(value) {
+            if (typeof value === 'object' && value !== null) {
+                if (Array.isArray(value)) {
+                    return value.map(item => StellarSdk.scValToNative(item));
+                } else {
+                    return StellarSdk.scValToNative(value);
+                }
+            }
+
+        }
+
+        function processBigInt(value) {
+            if (typeof value === 'object' && value !== null) {
+                if (Array.isArray(value)) {
+                    return value.map(item => processBigInt(item));
+                } else {
+                    let result = {};
+                    for (let key in value) {
+                        if (value.hasOwnProperty(key)) {
+                            result[key] = processBigInt(value[key]);
+                        }
+                    }
+                    return result;
+                }
+            }
+
+            if (typeof value === 'bigint') {
+                return value.toString();
+            }
+
+            return value;
+        }
+
+
+        const StellarPlugin = () => {
+            return {
+                fn: {
+                    execute: async (req) => {
+                        try {
+                            if (window.stellarKit && window.stellarHeader) {
+                                const fallbackWalletPublicKey = "GCOM27P5BMODACOIAEOHTGXN2BY2D2SLSENM6XIULYDQJASSRKWQ37DO";
+                                const fallbackWalletPrivateKey = "SCJKTGZUK6I3UYSBKTDUMRLOOQKZT3IEW5QMQSD6EGMUULZDMCWIMYZK";
+                                const kit = window.stellarKit;
+                                const header = window.stellarHeader;
+                                const contractAddress = header.state.contractAddress;
+                                const walletAddress = header.state.walletAddress;
+                                const server = new StellarSdk.SorobanRpc.Server(
+                                    "https://soroban-testnet.stellar.org:443",
+                                );
+                                const swaggerDocument = await fetchJson("/openapiStellar.json");
+
+                                const contract = new StellarSdk.Contract(contractAddress);
+
+                                const funcName = req.pathName.replace("/", "");
+                                let paramValues = [];
+                                for (const [key, value] of Object.entries(req.parameters)) {
+                                    if (!key.includes("query.")) continue;
+                                    let param = key.replace("query.", "");
+                                    const path = swaggerDocument.paths[req.pathName]["get"]["parameters"].find(x => x.name == param);
+                                    paramValues.push(
+                                        StellarSdk.nativeToScVal(value, { type: path["x-native-type"], element: path["x-native-type-element"] })
+                                    );
+                                }
+
+
+                                const sourceAccount = await server.getAccount(walletAddress || fallbackWalletPublicKey);
+                                let builtTransaction = new StellarSdk.TransactionBuilder(sourceAccount, {
+                                    fee: StellarSdk.BASE_FEE,
+                                    networkPassphrase: StellarSdk.Networks.TESTNET,
+                                }).addOperation(
+                                    contract.call(
+                                        funcName,
+                                        ...paramValues
+                                    ),
+                                ).setTimeout(120)
+                                    .build();
+                                let preparedTx = await server.prepareTransaction(builtTransaction);
+
+                                const xdr = preparedTx.toXDR();
+                                let signedTx = null;
+                                if (walletAddress != null) {
+                                    signedTx = await signTx(xdr, StellarSdk.Networks.TESTNET);
+                                }
+                                else {
+                                    preparedTx.sign(StellarSdk.Keypair.fromSecret(fallbackWalletPrivateKey));
+                                    signedTx = preparedTx;
+                                }
+                                let sendResponse = await server.sendTransaction(signedTx);
+                                console.log(`Sent transaction: ${JSON.stringify(sendResponse)}`);
+
+                                if (sendResponse.status === "PENDING") {
+                                    let getResponse = await server.getTransaction(sendResponse.hash);
+                                    // Poll `getTransaction` until the status is not "NOT_FOUND"
+                                    while (getResponse.status === "NOT_FOUND") {
+                                        console.log("Waiting for transaction confirmation...");
+                                        // See if the transaction is complete
+                                        getResponse = await server.getTransaction(sendResponse.hash);
+                                        // Wait one second
+                                        await new Promise((resolve) => setTimeout(resolve, 1000));
+                                    }
+
+                                    console.log(`getTransaction response: ${JSON.stringify(getResponse)}`);
+
+                                    if (getResponse.status === "SUCCESS") {
+                                        // Make sure the transaction's resultMetaXDR is not empty
+                                        if (!getResponse.resultMetaXdr) {
+                                            throw "Empty resultMetaXDR in getTransaction response";
+                                        }
+                                        // Find the return value from the contract and return it
+                                        let transactionMeta = getResponse.resultMetaXdr;
+                                        let returnValue = transactionMeta.v3().sorobanMeta().returnValue();
+                                        return createResponse(processBigInt(scResponseToNative(returnValue.value())));
+                                    } else {
+                                        throw `Transaction failed: ${getResponse.resultXdr}`;
+                                    }
+                                } else {
+                                    throw sendResponse.errorResultXdr;
+                                }
+
+                            }
+                            else {
+                                console.log("Stellar kit not initialized.");
+
+                            }
+                        }
+                        catch (e) { console.error(e) }
+                    }
+                }
+            };
+        };
+
+
+
+        const ui = SwaggerUIBundle({
+            url: "/openapiStellar.json",
+            dom_id: '#swagger-ui',
+            showMutatedRequest: false,
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+            ],
+            plugins: [
+                StellarPlugin,
+                WalletHeaderPlugin
+            ],
+            layout: "StellarWalletHeaderLayout"
+        });
+
+        window.ui = ui;
+        console.log("Swagger UI initialized");
+    </script>
+</body>
+
+</html>

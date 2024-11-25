@@ -1,0 +1,46 @@
+[
+    {
+        "type": "function",
+        "doc": "Greeting function - will output a greeting as a vector of strings\n\n#Arguments\n\n* `to` - Who to greet",
+        "name": "hello",
+        "inputs": [
+            {
+                "doc": "",
+                "name": "to",
+                "value": {
+                    "type": "string"
+                }
+            }
+        ],
+        "outputs": [
+            {
+                "type": "vec",
+                "element": {
+                    "type": "string"
+                }
+            }
+        ]
+    },
+    {
+        "type": "function",
+        "doc": "Greeting function - will output a greeting as a vector of ints\n\n#Arguments\n\n* `to` - Who to greet",
+        "name": "hello2",
+        "inputs": [
+            {
+                "doc": "",
+                "name": "to",
+                "value": {
+                    "type": "u64"
+                }
+            }
+        ],
+        "outputs": [
+            {
+                "type": "vec",
+                "element": {
+                    "type": "u64"
+                }
+            }
+        ]
+    }
+]

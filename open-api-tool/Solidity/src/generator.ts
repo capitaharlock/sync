@@ -3,6 +3,7 @@ import { OpenAPIV3 } from "openapi-types";
 
 interface CustomOperationObject extends OpenAPIV3.PathItemObject {
     "x-abi"?: any;
+    "x-read-only": boolean
 }
 
 // Map Solidity types to OpenAPI-compatible types
@@ -28,9 +29,8 @@ function formatParamDescriptions(params: { [key: string]: string }): string {
         .join('\n');
 }
 
-
 // Generate OpenAPI spec from function definitions
-export function generateOpenApiSpec(functions: FunctionDefinition[]): OpenAPIV3.Document {
+export function generateOpenApiSpec(smartContractName: string, functions: FunctionDefinition[]): OpenAPIV3.Document {
     const paths: OpenAPIV3.PathsObject = {};
 
     functions.forEach((func) => {
@@ -43,7 +43,6 @@ export function generateOpenApiSpec(functions: FunctionDefinition[]): OpenAPIV3.
 
         // Using POST for all functions
         const operation: CustomOperationObject = {
-        // paths[path] = {
             parameters: [
                 ...func.inputs.map(param => ({
                     name: param.name,
@@ -52,15 +51,6 @@ export function generateOpenApiSpec(functions: FunctionDefinition[]): OpenAPIV3.
                     description: param.description || '',
                     schema: mapSolidityTypeToOpenApiType(param.type),
                 })),
-                {
-                    name: "from",
-                    in: "query",
-                    required: true,
-                    schema: {
-                        type: "string",
-                        default: "0x1234567890abcdef1234567890abcdef12345678"
-                    }
-                },
                 {
                     name: "contractAddress",
                     in: "query",
@@ -95,7 +85,7 @@ export function generateOpenApiSpec(functions: FunctionDefinition[]): OpenAPIV3.
             post: {
                 summary: `${func.natspec || ''}`,
                 requestBody: {
-                    description: `Request body for ${func.name}..\n\n${formattedParamsDescription}`,
+                    description: `Request body for ${func.name}.\n\n${formattedParamsDescription}`,
                     required: true,
                     content: {
                         "application/json": {
@@ -132,13 +122,18 @@ export function generateOpenApiSpec(functions: FunctionDefinition[]): OpenAPIV3.
                                     properties: {
                                         jsonrpc: { type: 'string', enum: ['2.0'] },
                                         id: { type: 'integer' },
-                                        result: func.outputs.reduce((acc, ret) => {
-                                            acc["result"] = {
-                                                type: mapSolidityTypeToOpenApiType(ret.type),
-                                                description: ret.description || func.devdoc?.returns || '', // Include return description from devdoc
-                                            };
-                                            return acc;
-                                        }, {} as Record<string, any>),
+                                        result: {
+                                            type: 'object',
+                                            properties: func.outputs.reduce((acc, ret, index) => {
+                                                // Check if `ret` has a name, otherwise use `output_<index>`
+                                                const outputName = (ret as any).name || `output_${index}`;
+                                                acc[outputName] = {
+                                                    ...mapSolidityTypeToOpenApiType((ret as any).type),
+                                                    description: (ret as any).description || func.devdoc?.returns || '',
+                                                };
+                                                return acc;
+                                            }, {} as Record<string, OpenAPIV3.SchemaObject>),
+                                        },
                                     },
                                 },
                             },
@@ -146,7 +141,8 @@ export function generateOpenApiSpec(functions: FunctionDefinition[]): OpenAPIV3.
                     },
                 },
             },
-            "x-abi": abi // As
+            "x-abi": abi,
+            "x-read-only": func.isView,
         };
 
         paths[path] = operation;
@@ -155,11 +151,10 @@ export function generateOpenApiSpec(functions: FunctionDefinition[]): OpenAPIV3.
     const openApiSpec: OpenAPIV3.Document = {
         openapi: "3.0.0",
         info: {
-            title: "Solidity Contract API",
+            title: `${smartContractName} Solidity API`,
             version: "1.0.0",
         },
         paths: paths,
-        servers: [ {url: "https://eth.llamarpc.com", description: "Mainnet"} ]
     };
 
     return openApiSpec;

@@ -23,7 +23,7 @@ type Module struct {
     Language        Language  `gorm:"foreignKey:LanguageID" json:"language"`
     Framework       Framework `gorm:"foreignKey:FrameworkID" json:"framework"`
     Network         Network   `gorm:"foreignKey:NetworkID" json:"network"`
-    MockSet        MockSet   `gorm:"foreignKey:MockSetID" json:"mock_set"`
+    MockSet         MockSet   `gorm:"foreignKey:MockSetID" json:"mock_set"`
     DateTimeCreated  time.Time `gorm:"autoCreateTime" json:"date_time_created"`
     DateTimeModified time.Time `gorm:"autoUpdateTime" json:"date_time_modified"`
 }

@@ -45,3 +45,5 @@ lib/*.js
 test/*.js
 *.map
 target
+
+# Api

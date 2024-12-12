@@ -16,3 +16,8 @@ docker-compose logs -f
 
 ## Test on Mac
 brew install postgresql
+
+## --- Deply instructions ---
+## 1 build locally
+go build -o api-server ./cmd/main.go
+## 2 

@@ -1,0 +1,117 @@
+.createModuleRootContainer{
+    display: flex;
+    width: 1216px;
+    height: 816px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: -1px;
+    flex-shrink: 0;
+}
+.createHeader {
+    display: flex;
+    padding: 16px 24px;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 8px 8px 0px 0px;
+    border: 1px solid var(--Background-Border, #696969);
+    background: var(--Background-Container, #252525);
+}
+.createMidContainer {
+    display: flex;
+    padding: 40px;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+    border: 1px solid var(--Background-Border, #696969);
+    background: var(--Background-Container, #252525);
+}
+.createBottomContainer {
+    display: flex;
+    padding: 16px 40px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 0px 0px 8px 8px;
+    border: 1px solid var(--Background-Border, #696969);
+    background: var(--Background-Container, #252525);
+}
+.moduleDetailsContainer {
+    display: flex;
+    width: 1136px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.moduleDetailsLeft {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.moduleDetailsLeftSummary {
+    display: flex;
+    width: 360px;
+    padding-bottom: 24px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 8px;
+}
+.moduleDetailsLeftFieldSection {
+    display: flex;
+    width: 360px;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+.moduleDetailsLeftFields {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    align-self: stretch;
+}
+.moduleDetailsRight {
+    display: flex;
+    width: 736px;
+    height: 595px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: 1px solid var(--color-background-border);
+    background: var(--color-background-default);
+}
+.moduleCodeEditorContainer {
+    display: flex;
+    /* padding: 24px; */
+    /* justify-content: center; */
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+    width: 100%;
+    overflow: scroll;
+}
+.moduleCodeEditor {
+    font-family: "Roboto Mono";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    border-radius: '4px';
+    width: 100%;
+}
+.moduleCodeEditorStatusBar {
+    display: flex;
+    padding: 4px 16px;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    align-self: stretch;
+}
+.loadingSpinner {
+    width: 56px;
+    height: 56px;
+    background: url('/images/module/loading-spinner.svg') no-repeat;
+}

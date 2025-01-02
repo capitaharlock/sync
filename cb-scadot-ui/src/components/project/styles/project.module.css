@@ -1,0 +1,222 @@
+.mainContainer {
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+}
+
+.twoColumnLayout {
+    display: flex;
+    gap: 48px;
+    margin-top: 24px;
+}
+
+.leftColumn {
+    width: 240px;
+    flex-shrink: 0;
+    text-align: left;
+}
+
+.rightColumn {
+    flex: 1;
+    min-width: 0;
+}
+
+.sectionContent {
+    padding: 24px;
+    border-radius: 8px;
+}
+
+.formFields {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.textFieldContainer {
+    width: 100%;
+}
+
+.textField {
+    width: 100%;
+}
+
+.textAreaContainer {
+    width: 100%;
+    margin-top: 24px;
+}
+
+.textarea {
+    width: 100%;
+    min-height: 120px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+.headerWrapper {
+    background: var(--Background-Primary-Dark);
+    border-radius: 8px;
+    padding: 16px 24px;
+    margin-bottom: 32px;
+    border: 1px solid #fff;
+}
+
+.headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.breadcrumbSection {
+    flex: 1;
+}
+
+.buttonsSection {
+    display: flex;
+    gap: 12px;
+}
+
+.contentContainer {
+    width: 100%;
+}
+
+.contentHeaderWrapper {
+    margin-bottom: 24px;
+}
+
+.rect {
+    width: 48px;
+    height: 4px;
+    background: var(--Background-Primary, #D04A02);
+    margin-bottom: 16px;
+}
+
+.contentHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+/* Menu Styles */
+.mainTitle {
+    margin-bottom: 24px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #989898;
+    padding: 14px 14px 0px;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.menuItem {
+    padding: 8px 8px 8px 16px;
+    font-size: 16px;
+    color: #777;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
+    cursor: pointer;
+}
+
+.menuItem:hover {
+    background-color: #404040;
+    color: #fff !important;
+}
+
+.menuItem.active {
+    background-color: #404040;
+    color: #fff;
+}
+
+.menuItem:active {
+    background-color: #505050;
+}
+
+.menuItem.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: transparent;
+    color: #999;
+}
+
+.menuItem:hover:not(.disabled) {
+    background-color: #404040;
+    color: #fff;
+}
+
+/* Table Styles */
+.tableWrapper {
+    background: rgb(46, 46, 46);
+    border-radius: 8px;
+}
+
+.customTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.customTable th {
+    text-align: left;
+    padding: 12px 16px;
+    background-color: #404040;
+    border-bottom: 2px solid #ddd;
+    color: #fff;
+    font-weight: 500;
+}
+
+.customTable td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #ddd;
+    color: #fff;
+}
+
+.customTable tr:nth-child(even) {
+    background-color: #404040;
+}
+
+.customTable tr:hover {
+    background-color: #505050;
+}
+
+/* Action Buttons */
+.actionButtons {
+    display: flex;
+    gap: 8px;
+}
+
+.actionButton {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.actionButtonDelete {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.actionButton:hover,
+.actionButtonDelete:hover {
+    text-decoration: underline;
+}

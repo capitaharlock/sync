@@ -1,0 +1,59 @@
+.authBackground {
+  padding: 128px 150px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  width: 985px;
+  height: 655px;
+}
+
+.left {
+  width: 619px;
+  height: 655px;
+  background: url('/images/welcome.svg') no-repeat;
+}
+
+.right {
+  width: 462px;
+  height: 204px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.frame835558396 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  width: 462px;
+}
+
+.frame835558401 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.rect {
+  width: 48px;
+  height: 4px;
+  background: var(--Background-Primary, #D04A02);
+}
+
+.title {
+  color: var(--color-text-heading);
+  font-family: "Helvetica Neue";
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 48px;
+  letter-spacing: -0.8px;
+}
+
+.title span {
+  color: var(--Text-Primary, #FB734D);
+}

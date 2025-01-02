@@ -1,7 +1,15 @@
- ## dev
- docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+## *** dev
 
-## production
+# ??? docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+docker-compose up -d
+go run .\cmd\main.go
+
+# Check
+browse to http://localhost:8080/ and see if there is a response in console (cmd)
+
+
+
+## *** production
 docker-compose up -d
 
 ## Logs
@@ -21,3 +29,4 @@ brew install postgresql
 ## 1 build locally
 go build -o api-server ./cmd/main.go
 ## 2 
+## 3

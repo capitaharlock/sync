@@ -37,7 +37,7 @@ export default function LoginForm() {
         try {
             const response = await authService.login(formData);
             if (response.token) {
-                login(response.token); // Update auth state
+                login(response.token);    // Update auth state
                 router.push('/projects'); // Redirect after state is updated
             }
         } catch (err) {

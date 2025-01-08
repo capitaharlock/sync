@@ -99,7 +99,7 @@ func (h *ProjectHandler) Update(c *gin.Context) {
     var input struct {
         Name        string `json:"name"`
         Description string `json:"description"`
-        AdoID       string `json:"ado_id"` // Ensure ado_id is included
+        AdoID       string `json:"ado_id"`
         Status      string `json:"status"`
         Visibility  string `json:"visibility"`
     }
@@ -121,7 +121,7 @@ func (h *ProjectHandler) Update(c *gin.Context) {
     if input.Description != "" {
         project.Description = input.Description
     }
-    if input.AdoID != "" { // Ensure ado_id is updated
+    if input.AdoID != "" {
         project.AdoID = input.AdoID
     }
     if input.Status != "" {

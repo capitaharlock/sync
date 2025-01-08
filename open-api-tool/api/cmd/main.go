@@ -17,24 +17,20 @@ import (
 )
 
 func main() {
-	// Command line flags for database operations
 	migrate := flag.Bool("migrate", false, "Run database migrations")
 	seed := flag.Bool("seed", false, "Seed database with initial data")
 	flag.Parse()
 
-	// Load configuration
 	cfg, err := config.Load()
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}
 
-	// Initialize database
 	db, err := database.NewPostgresDB(cfg.Database)
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	// Handle database operations flags
 	if *migrate || *seed {
 		if *migrate {
 			log.Println("Running migrations...")
@@ -51,47 +47,38 @@ func main() {
 		return
 	}
 
-	// Initialize repositories
 	userRepo := repository.NewUserRepository(db)
 	projectRepo := repository.NewProjectRepository(db)
 	moduleRepo := repository.NewModuleRepository(db)
 
-	// Initialize services
 	userService := services.NewUserService(userRepo, cfg.JWTSecret)
 	projectService := services.NewProjectService(projectRepo)
 	moduleService := services.NewModuleService(moduleRepo)
 
-	// Initialize handlers
 	userHandler := handlers.NewUserHandler(userService)
 	projectHandler := handlers.NewProjectHandler(projectService)
 	moduleHandler := handlers.NewModuleHandler(moduleService)
 
-	// Initialize router
 	r := gin.Default()
 
-	// Add CORS middleware with custom configuration
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"}, // Allow your React app's origin
+		AllowOrigins:     []string{"http://localhost:3000"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"}, // Allow Authorization header
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
-		MaxAge:           12 * time.Hour, // Cache preflight requests for 12 hours
+		MaxAge:           12 * time.Hour,
 	}))
 
-	// Use error handler middleware
 	r.Use(middleware.ErrorHandler())
 
-	// Public routes
 	r.POST("/register", userHandler.Register)
 	r.POST("/login", userHandler.Login)
 	r.POST("/recover-password", userHandler.RecoverPassword)
 
-	// Protected routes
 	auth := r.Group("/")
 	auth.Use(middleware.AuthMiddleware(cfg.JWTSecret))
 	{
-		// Project routes
 		projects := auth.Group("/projects")
 		{
 			projects.POST("", projectHandler.Create)
@@ -100,7 +87,6 @@ func main() {
 			projects.DELETE("/:projectId", projectHandler.Delete)
 			projects.PUT("/:projectId", projectHandler.Update)
 
-			// Module routes - nested under projects
 			modules := projects.Group("/:projectId/modules")
 			{
 				modules.POST("", moduleHandler.Create)
@@ -112,7 +98,6 @@ func main() {
 		}
 	}
 
-	// Start server
 	log.Printf("Server starting on %s", cfg.ServerAddress)
 	if err := r.Run(cfg.ServerAddress); err != nil {
 		log.Fatalf("Failed to start server: %v", err)

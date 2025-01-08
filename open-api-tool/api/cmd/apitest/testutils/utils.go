@@ -1,12 +1,11 @@
 package testutils
 
 import (
-    "bytes"
-    "encoding/json"
-    "fmt"
-    "io/ioutil"
-    "net/http"
-    "testing"
+	"bytes"
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
+	"testing"
 )
 
 const BaseURL = "http://localhost:8080"
@@ -51,19 +50,16 @@ func RunTestCase(t *testing.T, tc TestCase) {
     }
     defer resp.Body.Close()
 
-    // Read response body
     body, err := ioutil.ReadAll(resp.Body)
     if err != nil {
         t.Fatalf("Failed to read response body: %v", err)
     }
 
-    // Print request and response details for failures
     if resp.StatusCode != tc.ExpectedStatus {
         t.Errorf("\nRequest: %s %s\nRequest Body: %s\nExpected Status: %d\nGot Status: %d\nResponse Body: %s", 
             tc.Method, tc.Path, string(reqBody), tc.ExpectedStatus, resp.StatusCode, string(body))
     }
 
-    // Optional: Validate response body if expected body is provided
     if tc.ExpectedBody != "" && string(body) != tc.ExpectedBody {
         t.Errorf("Expected body %s, got %s", tc.ExpectedBody, string(body))
     }

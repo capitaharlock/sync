@@ -59,6 +59,27 @@ func (h *ModuleHandler) Create(c *gin.Context) {
     c.JSON(http.StatusCreated, module)
 }
 
+func (h *ModuleHandler) List(c *gin.Context) {
+    projectID, _ := strconv.ParseUint(c.Param("projectId"), 10, 32)
+    page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+    limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
+
+    modules, total, err := h.service.List(uint(projectID), page, limit)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch modules"})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{
+        "data": modules,
+        "meta": gin.H{
+            "total": total,
+            "page":  page,
+            "limit": limit,
+        },
+    })
+}
+
 func (h *ModuleHandler) Get(c *gin.Context) {
     projectID, _ := strconv.ParseUint(c.Param("projectId"), 10, 32)
     moduleID, _ := strconv.ParseUint(c.Param("moduleId"), 10, 32)
@@ -74,7 +95,7 @@ func (h *ModuleHandler) Get(c *gin.Context) {
 
 func (h *ModuleHandler) Update(c *gin.Context) {
     projectID, _ := strconv.ParseUint(c.Param("projectId"), 10, 32)
-    moduleID, _ := strconv.ParseUint(c.Param("id"), 10, 32)
+    moduleID, _ := strconv.ParseUint(c.Param("moduleId"), 10, 32)
 
     var input struct {
         Name           string `json:"name"`
@@ -141,7 +162,7 @@ func (h *ModuleHandler) Update(c *gin.Context) {
 
 func (h *ModuleHandler) Delete(c *gin.Context) {
     projectID, _ := strconv.ParseUint(c.Param("projectId"), 10, 32)
-    moduleID, _ := strconv.ParseUint(c.Param("id"), 10, 32)
+    moduleID, _ := strconv.ParseUint(c.Param("moduleId"), 10, 32)
 
     if err := h.service.Delete(uint(moduleID), uint(projectID)); err != nil {
         c.JSON(http.StatusNotFound, gin.H{"error": "Module not found"})

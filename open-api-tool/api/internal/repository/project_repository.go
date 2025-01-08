@@ -1,8 +1,9 @@
 package repository
 
 import (
-    "api/internal/models"
-    "gorm.io/gorm"
+	"api/internal/models"
+
+	"gorm.io/gorm"
 )
 
 type ProjectRepository struct {
@@ -36,6 +37,10 @@ func (r *ProjectRepository) List(userID uint, page, limit int) ([]models.Project
     err = r.db.Preload("User").Where("user_id = ?", userID).
         Offset(offset).Limit(limit).Find(&projects).Error
     return projects, total, err
+}
+
+func (r *ProjectRepository) Update(project *models.Project) error {
+    return r.db.Save(project).Error
 }
 
 func (r *ProjectRepository) Delete(id uint, userID uint) error {

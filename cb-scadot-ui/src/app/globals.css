@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import '@appkit4/styles/appkit.min.css';
+@import '@appkit4/react-components/dist/styles/appkit4-react.min.css';
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --page-padding: 2.5rem;
+  --header-right-padding: 10rem;
+  --color-text-heading: #ffffff;
+  --color-text-body: #D1D1D1;
+  --color-background-default: #191919;
+  --color-background-container: #252525;
+  --color-background-hover-selected: #3B3B3B;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+.root-container {
+  background-color: var(--color-background-default);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* min-height: 100vh; */
+}
+
+.header {
+  width: 100%;
+  max-width: 1440px;
+  height: 64px;
+  background-color: var(--color-background-container);
+  display: flex;
+}
+
+.frame32 {
+  background-color: var(--color-background-default);
+  display: flex;
+  width: 100%;
+  max-width: 1440px;
+  align-items: flex-start;
+  flex-shrink: 0;
+  border: solid 1px var(--color-background-container);
+}
+.sidebar {
+  background-color: var(--color-background-container);
+  display: flex;
+  padding: 4px 4px 16px 4px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+}
+.content {
+  display: flex;
+  padding: 40px;
+  background-color: var(--color-background-default);
+  width: 1360px;
+}
+
+.main-container {
+  width: 1288px;
+  height: 880px;
+  border-radius: 8px;
+  background: var(--Background-Container, #252525);
+  box-shadow: 0px 2px 4px -2px var(--Elevation-Shadow-Low, rgba(0, 0, 0, 0.48));
+
+}
+.main-container-alternate {
+  background-color: var(--color-background-default) !important;
+  box-shadow: none;
+}
+
+
+.footer-container {
+  background-color: var(--color-background-default);
+  display: flex;
+  height: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+}
+
+.ap-navigation-footer {
+  /* overrides out of box background color */
+  background-color: var(--color-background-container) !important;
+}
+
+
+.ap-progress-stepper-btn {
+  /* overrides appkit stepper default maxwidth */
+  max-width: 190px !important;
+}
+.ap-accordion-title {
+  /* height: 40px !important; */
+  overflow: visible !important;
+}
+.ap-accordion-group-container li {
+  border-bottom: none !important;
+}
+.ap-accordion .ap-accordion-toggle .Appkit4-icon {
+   color: #D04A02 !important;
+}
+.ap-accordion-group-container {
+  background-color: var(--color-background-container) !important;
+}
+.appkit4-icon-alternate {
+  color: #D04A02 !important;
+}
+.ap-navigation-footer {
+  display: none !important;
+}
+
+
+.ap-navigation-wrapper .ap-navigation-item {
+  display: block;
+  background-color: var(--color-background-container);
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-top: 10px;
+}
+.ap-navigation-wrapper .ap-navigation-item .prefix-content {
+  margin-bottom: -20px;
+  margin-left: -5px !important;
+  background-color: var(--color-background-container);
+  padding-bottom: 0px;
+  background-color: transparent;
+}
+
+.ap-navigation-item .itemContent {
+  color: white;
+  font-size:x-small;
+  margin-left: -10px !important;
+  background-color: var(--color-background-container);
+  z-index: 200;
+}
+.ap-navigation-item .itemContent span {
+  margin-left: -10px;
+  font-size: x-small;
+  background-color: var(--color-background-container);
+  z-index: 200;
+}
+.cursor-pointer:hover {
+  background: var(--color-background-hover);
+  cursor: pointer;
+}
+.ap-combobox {
+  width: 100% !important;
+}

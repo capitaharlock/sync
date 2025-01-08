@@ -1,0 +1,60 @@
+.form {
+ width: 100%;
+ display: flex;
+ flex-direction: column;
+ gap: 24px;
+}
+
+.accordionContentMultifields {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ margin-bottom: 24px;
+}
+
+.textFieldContainer {
+ width: 100%;
+}
+
+.textField {
+ width: 100%;
+}
+
+.workAreaFoot {
+ display: flex;
+ justify-content: flex-end;
+ margin-top: 24px;
+}
+
+.nextStepContainer {
+ display: flex;
+ justify-content: flex-end;
+}
+
+.error {
+ color: var(--color-error, #dc2626);
+ background-color: var(--color-error-background, #fee2e2);
+ padding: 8px 12px;
+ border-radius: 4px;
+ font-size: 14px;
+}
+
+.linkText {
+ text-align: center;
+ font-size: 14px;
+ color: var(--color-text-body);
+ margin-top: 16px;
+}
+
+.link {
+ color: var(--color-primary);
+ cursor: pointer;
+}
+
+.link:hover {
+ text-decoration: underline;
+}
+
+.authBackground, .container, .left, .right, .frame835558396, 
+.frame835558401, .rect, .title {
+}

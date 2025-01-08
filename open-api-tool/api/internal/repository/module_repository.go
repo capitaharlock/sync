@@ -25,14 +25,6 @@ func (r *ModuleRepository) FindByID(id uint, projectID uint) (*models.Module, er
     return &module, err
 }
 
-func (r *ModuleRepository) Update(module *models.Module) error {
-    return r.db.Save(module).Error
-}
-
-func (r *ModuleRepository) Delete(id uint, projectID uint) error {
-    return r.db.Where("id = ? AND project_id = ?", id, projectID).Delete(&models.Module{}).Error
-}
-
 func (r *ModuleRepository) List(projectID uint, page, limit int) ([]models.Module, int64, error) {
     var modules []models.Module
     var total int64
@@ -49,4 +41,12 @@ func (r *ModuleRepository) List(projectID uint, page, limit int) ([]models.Modul
           Offset(offset).Limit(limit).Find(&modules).Error
     
     return modules, total, err
+}
+
+func (r *ModuleRepository) Update(module *models.Module) error {
+    return r.db.Save(module).Error
+}
+
+func (r *ModuleRepository) Delete(id uint, projectID uint) error {
+    return r.db.Where("id = ? AND project_id = ?", id, projectID).Delete(&models.Module{}).Error
 }

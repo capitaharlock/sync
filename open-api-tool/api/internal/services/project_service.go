@@ -1,8 +1,8 @@
 package services
 
 import (
-    "api/internal/models"
-    "api/internal/repository"
+	"api/internal/models"
+	"api/internal/repository"
 )
 
 type ProjectService struct {
@@ -23,6 +23,10 @@ func (s *ProjectService) Get(id uint, userID uint) (*models.Project, error) {
 
 func (s *ProjectService) List(userID uint, page, limit int) ([]models.Project, int64, error) {
     return s.repo.List(userID, page, limit)
+}
+
+func (s *ProjectService) Update(project *models.Project) error {
+    return s.repo.Update(project)
 }
 
 func (s *ProjectService) Delete(id uint, userID uint) error {

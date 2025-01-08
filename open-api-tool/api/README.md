@@ -16,3 +16,6 @@ docker-compose logs -f
 
 ## Test on Mac
 brew install postgresql
+
+## Execute API locally
+air -c air.toml

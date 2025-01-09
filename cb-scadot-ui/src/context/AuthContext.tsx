@@ -12,11 +12,13 @@ const AuthContext = createContext<{
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(() => {
-        // Initialize state synchronously from localStorage
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        // Initialize state from localStorage after component mounts (client-side)
         const token = localStorage.getItem('token');
-        return !!token;
-    });
+        setIsLoggedIn(!!token);
+    }, []);
 
     const login = (token: string) => {
         localStorage.setItem('token', token);

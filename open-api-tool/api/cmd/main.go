@@ -47,20 +47,28 @@ func main() {
 		return
 	}
 
+	// Initialize repositories
 	userRepo := repository.NewUserRepository(db)
 	projectRepo := repository.NewProjectRepository(db)
 	moduleRepo := repository.NewModuleRepository(db)
+	repositoryRepo := repository.NewRepositoriesRepository(db) // Add this line
 
+	// Initialize services
 	userService := services.NewUserService(userRepo, cfg.JWTSecret)
 	projectService := services.NewProjectService(projectRepo)
 	moduleService := services.NewModuleService(moduleRepo)
+	repositoryService := services.NewRepositoryService(repositoryRepo) // Add this line
 
+	// Initialize handlers
 	userHandler := handlers.NewUserHandler(userService)
 	projectHandler := handlers.NewProjectHandler(projectService)
 	moduleHandler := handlers.NewModuleHandler(moduleService)
+	repositoryHandler := handlers.NewRepositoryHandler(repositoryService) // Add this line
 
+	// Initialize Gin
 	r := gin.Default()
 
+	// Configure CORS
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:3000"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -70,15 +78,19 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 
+	// Error handling middleware
 	r.Use(middleware.ErrorHandler())
 
+	// Public routes
 	r.POST("/register", userHandler.Register)
 	r.POST("/login", userHandler.Login)
 	r.POST("/recover-password", userHandler.RecoverPassword)
 
+	// Authenticated routes
 	auth := r.Group("/")
 	auth.Use(middleware.AuthMiddleware(cfg.JWTSecret))
 	{
+		// Project routes
 		projects := auth.Group("/projects")
 		{
 			projects.POST("", projectHandler.Create)
@@ -87,6 +99,7 @@ func main() {
 			projects.DELETE("/:projectId", projectHandler.Delete)
 			projects.PUT("/:projectId", projectHandler.Update)
 
+			// Module routes
 			modules := projects.Group("/:projectId/modules")
 			{
 				modules.POST("", moduleHandler.Create)
@@ -94,10 +107,19 @@ func main() {
 				modules.GET("/:moduleId", moduleHandler.Get)
 				modules.PUT("/:moduleId", moduleHandler.Update)
 				modules.DELETE("/:moduleId", moduleHandler.Delete)
+
+				// Repository routes
+				repositories := modules.Group("/:moduleId/repository")
+				{
+					repositories.GET("", repositoryHandler.GetRepository)
+					repositories.POST("", repositoryHandler.SaveRepository)
+					repositories.DELETE("", repositoryHandler.DeleteRepository)
+				}
 			}
 		}
 	}
 
+	// Start the server
 	log.Printf("Server starting on %s", cfg.ServerAddress)
 	if err := r.Run(cfg.ServerAddress); err != nil {
 		log.Fatalf("Failed to start server: %v", err)

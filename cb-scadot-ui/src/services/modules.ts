@@ -35,7 +35,7 @@ export const moduleService = {
     async getAll(
         token: string,
         projectId: number,
-    ): Promise<Module[]> {
+    ): Promise<ModuleResponse> {
         const response = await fetch(
             `${API_URL}/projects/${projectId}/modules`,
             {
@@ -44,11 +44,11 @@ export const moduleService = {
                 },
             },
         );
-
+    
         if (!response.ok) {
             throw new Error('Failed to fetch modules');
         }
-
+    
         return response.json();
     },
 

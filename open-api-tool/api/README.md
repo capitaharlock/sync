@@ -2,7 +2,7 @@
 
 # ??? docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 docker-compose up -d
-go run .\cmd\main.go
+air -c air.toml
 
 # Check
 browse to http://localhost:8080/ and see if there is a response in console (cmd)
@@ -30,7 +30,3 @@ brew install postgresql
 go build -o api-server ./cmd/main.go
 ## 2 
 ## 3
-
-
-## Execute API locally
-air -c air.toml

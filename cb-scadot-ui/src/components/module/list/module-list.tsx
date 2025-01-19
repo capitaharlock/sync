@@ -1,17 +1,37 @@
 'use client';
 import styles from '@/components/project/styles/project.module.css';
 import CreateNewModuleBtn from '@/components/buttons/create-new-module-btn';
+import { Button } from '@/components/buttons/custom-button';
 import React, { useEffect, useState } from 'react';
 import { moduleService } from '@/services/modules';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
+interface ModuleResponse {
+    data: Module[];
+    meta: {
+        limit: number;
+        page: number;
+        total: number;
+    };
+}
+
+interface Module {
+    id: number;
+    name: string;
+    description: string;
+    status: string;
+    visibility: string;
+    technology_id: number;
+    language_id: number;
+    framework_id: number;
+}
+
 const ModuleList = ({ projectId }: { projectId: string }) => {
-    const [modules, setModules] = useState([]);
+    const [modules, setModules] = useState<Module[]>([]);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
     const { isLoggedIn } = useAuth();
-    const resolvedProjectId = '2';
 
     useEffect(() => {
         if (!isLoggedIn) {
@@ -19,22 +39,19 @@ const ModuleList = ({ projectId }: { projectId: string }) => {
             return;
         }
         loadModules();
-    }, [isLoggedIn, resolvedProjectId]);
+    }, [isLoggedIn, projectId, router]);
 
     const loadModules = async () => {
         try {
             const token = localStorage.getItem('token');
             if (!token) throw new Error('No token found');
 
-            const response = await moduleService.getAll(
-                token,
-                Number(resolvedProjectId),
-            );
-            const formattedModules = response.map((module) => ({
+            const response: ModuleResponse = await moduleService.getAll(token, Number(projectId));
+            const formattedModules = response.data.map(module => ({
                 ...module,
-                publicValue: module.visibility === 'public' ? 'Yes' : 'No',
+                publicValue: module.visibility === 'public' ? 'Yes' : 'No'
             }));
-            setModules(formattedModules || []);
+            setModules(formattedModules);
         } catch (error) {
             console.error('Failed to load modules:', error);
         } finally {
@@ -43,7 +60,7 @@ const ModuleList = ({ projectId }: { projectId: string }) => {
     };
 
     const handleEdit = (moduleId: number) => {
-        router.push(`/projects/${resolvedProjectId}/modules/${moduleId}`);
+        router.push(`/projects/${projectId}/modules/${moduleId}/edit`);
     };
 
     const handleDelete = async (moduleId: number) => {
@@ -52,11 +69,7 @@ const ModuleList = ({ projectId }: { projectId: string }) => {
                 const token = localStorage.getItem('token');
                 if (!token) throw new Error('No token found');
 
-                await moduleService.delete(
-                    token,
-                    Number(resolvedProjectId),
-                    moduleId,
-                );
+                await moduleService.delete(token, Number(projectId), moduleId);
                 await loadModules();
             } catch (error) {
                 console.error('Failed to delete module:', error);
@@ -74,7 +87,7 @@ const ModuleList = ({ projectId }: { projectId: string }) => {
                 <div className={styles.contentHeader}>
                     <div className={styles.title}>Modules</div>
                     <div className={styles.btn}>
-                        <CreateNewModuleBtn projectId={resolvedProjectId} />
+                        <CreateNewModuleBtn projectId={projectId} />
                     </div>
                 </div>
             </div>
@@ -93,39 +106,41 @@ const ModuleList = ({ projectId }: { projectId: string }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {modules.map((module: any) => (
-                            <tr key={module.id}>
-                                <td>{module.name}</td>
-                                <td>{module.description}</td>
-                                <td>{module.status}</td>
-                                <td>{module.publicValue}</td>
-                                <td>{module.technology_id}</td>
-                                <td>{module.language_id}</td>
-                                <td>{module.framework_id}</td>
-                                <td>
-                                    <div className={styles.actionButtons}>
-                                        <button
-                                            className={styles.actionButton}
-                                            onClick={() =>
-                                                handleEdit(module.id)
-                                            }
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            className={
-                                                styles.actionButtonDelete
-                                            }
-                                            onClick={() =>
-                                                handleDelete(module.id)
-                                            }
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
+                        {modules.length === 0 ? (
+                            <tr>
+                                <td colSpan={8} className="text-center py-4">
+                                    No modules found. Create your first module!
                                 </td>
                             </tr>
-                        ))}
+                        ) : (
+                            modules.map((module) => (
+                                <tr key={module.id}>
+                                    <td>{module.name}</td>
+                                    <td>{module.description}</td>
+                                    <td>{module.status}</td>
+                                    <td>{module.publicValue}</td>
+                                    <td>{module.technology_id}</td>
+                                    <td>{module.language_id}</td>
+                                    <td>{module.framework_id}</td>
+                                    <td>
+                                        <div className={styles.actionButtons}>
+                                            <Button 
+                                                kind="secondary"
+                                                onClick={() => handleEdit(module.id)}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button 
+                                                kind="secondary"
+                                                onClick={() => handleDelete(module.id)}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
                     </tbody>
                 </table>
             </div>

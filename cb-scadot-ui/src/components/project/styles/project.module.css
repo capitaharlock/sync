@@ -220,3 +220,59 @@
 .actionButtonDelete:hover {
     text-decoration: underline;
 }
+
+/* Repositories - RJJ-TODO |Move */
+.infoBox {
+    margin-top: 24px;
+    padding: 16px 20px;
+    border: 1px solid #696969;
+    border-radius: 8px;
+    background-color: #252525;
+}
+
+.infoHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.infoIcon {
+    color: #3B82F6;  /* blue-500 */
+}
+
+.stepsList {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.stepsList li {
+    margin-bottom: 8px;
+}
+
+.stepsList li:last-child {
+    margin-bottom: 0;
+}
+
+.scopesList {
+    margin: 8px 0 8px 20px;
+    padding-left: 20px;
+}
+
+.scopesList li {
+    margin-bottom: 4px;
+}
+
+.scopesList code {
+    background-color: #374151;  /* gray-700 */
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Consolas', monospace;
+    font-size: 0.9em;
+}
+
+.buttonContainer {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}

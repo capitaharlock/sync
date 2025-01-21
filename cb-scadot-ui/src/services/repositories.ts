@@ -81,4 +81,28 @@ export const repositoryService = {
             throw new Error('Failed to delete repository');
         }
     },
+
+    async syncRepository(
+        token: string,
+        projectId: number,
+        moduleId: number,
+    ): Promise<{ message: string }> {
+        const response = await fetch(
+            `${API_URL}/projects/${projectId}/modules/${moduleId}/repository/sync`,
+            {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            },
+        );
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to sync repository');
+        }
+
+        return response.json();
+    },
 };

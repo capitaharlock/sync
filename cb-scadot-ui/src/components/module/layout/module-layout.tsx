@@ -1,19 +1,30 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import styles from '@/components/project/styles/project.module.css';
 
 interface ModuleLayoutBaseProps {
     children: React.ReactNode;
     selectedSection: 'details' | 'repository';
     onSectionChange: (section: 'details' | 'repository') => void;
-    isNew?: boolean;  // Add this prop
+    isNew?: boolean;
+    projectId: string;
+    moduleData?: {
+        id?: number;
+        name?: string;
+        status?: string;
+        visibility?: string;
+        networkName?: string;
+        date_time_created?: string;
+    };
 }
 
 export default function ModuleLayoutBase({ 
     children, 
     selectedSection,
     onSectionChange,
-    isNew 
+    isNew,
+    projectId,
+    moduleData
 }: ModuleLayoutBaseProps) {
     return (
         <div className={styles.mainContainer}>

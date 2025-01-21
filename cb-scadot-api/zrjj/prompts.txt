@@ -1,0 +1,11 @@
+I am creating a Go API to serve a next.js forntend.
+This is a tool to document APIs.
+I am attaching a few files. Feel free to ask for any of those that you can see in the filetree.
+
+Now I need a new Endpoint, added to the Repository module.
+I will click a "Syncronize repository" button in the frontend, and I want the API to downaload the repository into a temporary folder.
+We got the platform, the url, and the Fine-grained personal access token
+Can we make Go to execute this Git command ? And use a tmp folder set from an .env CONST ?
+
+Current FILETREE:
+

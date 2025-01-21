@@ -1,5 +1,5 @@
 import styles from './index.module.css'
-import JsonCodeEditor from '../inputs/json-code-editor';
+import JsonCodeEditor from './editor/json-code-editor';
 import { useAppSelector } from '@/lib/reduxHooks';
 
 export default function ModuleEditor() {

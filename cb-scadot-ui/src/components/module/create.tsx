@@ -1,6 +1,6 @@
 import styles from './create.module.css'
 import { Button, Input, Select } from '@appkit4/react-components';
-import JsonCodeEditor from '../inputs/json-code-editor';
+import JsonCodeEditor from './editor/json-code-editor';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/lib/reduxHooks';
 import { createModule } from '@/lib/slices/ModuleSlice';

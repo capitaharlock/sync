@@ -234,8 +234,8 @@ export default function ModuleDetails({
 
     const dummyData = {
         technology: [
-            { value: '1', label: 'Microservices' },
-            { value: '2', label: 'Service 2' },
+            { value: '1', label: 'APIs' },
+            { value: '2', label: 'Blockchain' },
         ],
         language: [
             { value: '1', label: 'Go' },

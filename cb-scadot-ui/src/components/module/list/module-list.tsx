@@ -60,7 +60,7 @@ const ModuleList = ({ projectId }: { projectId: string }) => {
     };
 
     const handleEdit = (moduleId: number) => {
-        router.push(`/projects/${projectId}/modules/${moduleId}/edit`);
+        router.push(`/projects/${projectId}/modules/${moduleId}`);
     };
 
     const handleDelete = async (moduleId: number) => {

@@ -1,4 +1,5 @@
 'use client';
+// RJJ-TODO Should be deleted I guess
 
 import ModulePanel  from '@/components/module/index';
 

@@ -1,3 +1,5 @@
+// File: src/services/modules.ts
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 export interface Module {
@@ -10,6 +12,15 @@ export interface Module {
     language_id: number;
     framework_id: number;
     network_id: number;
+}
+
+interface ModuleResponse {
+    data: Module[];
+    meta: {
+        total: number;
+        page: number;
+        limit: number;
+    };
 }
 
 interface ModuleCreateRequest {

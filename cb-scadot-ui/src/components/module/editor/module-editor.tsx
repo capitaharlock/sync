@@ -1,32 +1,67 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
 import JsonCodeEditor from '@/components/module/editor/json-code-editor';
 import styles from '@/components/module/styles/module.module.css';
+// @ts-expect-error: SwaggerUI types are not available
 import SwaggerUI from 'swagger-ui-react';
 import 'swagger-ui-react/swagger-ui.css';
 import YAML from 'yaml';
+import { moduleService } from '@/services/modules';
 
 interface ModuleEditorProps {
     projectId: string;
     moduleId: string;
 }
 
+interface OpenAPISpec {
+    openapi: string;
+    paths: Record<string, unknown>;
+    [key: string]: unknown;
+}
+
 export default function ModuleEditor({ projectId, moduleId }: ModuleEditorProps) {
-    const [spec, setSpec] = useState<any>(null);
+    const [spec, setSpec] = useState<OpenAPISpec | null>(null);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchModuleSpec = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+
+                const moduleData = await moduleService.getById(token, Number(projectId), Number(moduleId));
+                if (moduleData?.content_source) {
+                    handleCodeChange(moduleData.content_source);
+                } else {
+                    handleCodeChange(initialSpec);
+                }
+            } catch (error) {
+                console.error('Failed to fetch module specification:', error);
+                setError(error instanceof Error ? error.message : 'Failed to fetch module data');
+                handleCodeChange(initialSpec);
+            }
+        };
+
+        fetchModuleSpec();
+    }, [projectId, moduleId]);
 
     const handleCodeChange = (newCode: string) => {
         try {
-            const parsedSpec = YAML.parse(newCode);
+            const parsedSpec = YAML.parse(newCode) as OpenAPISpec;
+            if (!parsedSpec.openapi) {
+                throw new Error('Invalid OpenAPI specification: missing openapi version');
+            }
             setSpec(parsedSpec);
-        } catch (e) {
-            console.log('Invalid YAML:', e);
+            setError(null);
+        } catch (error) {
+            console.error('Invalid YAML:', error);
+            setError(error instanceof Error ? error.message : 'Invalid YAML format');
             setSpec(null);
         }
     };
-
-    useEffect(() => {
-        handleCodeChange(initialSpec);
-    }, []);
 
     return (
         <div className={styles.editorContainer}>
@@ -34,13 +69,18 @@ export default function ModuleEditor({ projectId, moduleId }: ModuleEditorProps)
                 <div className={styles.editorContent}>
                     <JsonCodeEditor 
                         onCodeChange={handleCodeChange}
+                        initialValue={initialSpec}
                     />
                 </div>
             </div>
 
             <div className={styles.swaggerPanel}>
                 <div className={styles.swaggerViewer}>
+                    {error && (
+                        <div className={styles.error}>{error}</div>
+                    )}
                     {spec ? (
+                        // @ts-expect-error: SwaggerUI component lacks proper TypeScript definitions
                         <SwaggerUI spec={spec} />
                     ) : (
                         <div>Enter valid OpenAPI specification</div>

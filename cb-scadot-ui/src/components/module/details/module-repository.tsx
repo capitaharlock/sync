@@ -5,16 +5,6 @@ import { Button } from '@appkit4/react-components/button';
 import styles from '@/components/project/styles/project.module.css';
 import { repositoryService } from '@/services/repositories';
 
-interface Repository {
-    id: number;
-    module_id: number;
-    repository_provider: string;
-    repository_url: string;
-    access_token: string;
-    created_at: string;
-    updated_at: string;
-}
-
 interface ModuleRepositoryProps {
     projectId: string;
     moduleId: string;
@@ -218,7 +208,7 @@ export default function ModuleRepository({
             </ul>
         </li>
         <li>Click <strong>Generate token</strong>.</li>
-        <li>Copy the token and save it securely (you won't be able to see it again).</li>
+        <li>Copy the token and save it securely (you won&#39;t be able to see it again).</li>
     </ol>
 </div>    
 

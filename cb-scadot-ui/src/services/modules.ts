@@ -10,7 +10,6 @@ export interface Module {
     language_id: number;
     framework_id: number;
     network_id: number;
-    mock_set_id: number;
 }
 
 interface ModuleCreateRequest {
@@ -22,7 +21,6 @@ interface ModuleCreateRequest {
     language_id: number;
     framework_id: number;
     network_id: number;
-    mock_set_id: number;
 }
 
 interface ModuleUpdateRequest {

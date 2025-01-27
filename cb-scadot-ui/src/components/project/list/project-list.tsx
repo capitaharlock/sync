@@ -80,7 +80,7 @@ const Projects = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {projects.map((project: any, index: number) => (
+                        {projects.map((project: unknown, index: number) => (
                             <tr key={project.id}>
                                 <td>{project.name}</td>
                                 <td>{project.description}</td>

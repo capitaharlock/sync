@@ -1,3 +1,4 @@
+
 'use client';
 import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
@@ -6,6 +7,7 @@ import ModuleDetails from '@/components/module/details/module-details';
 
 export default function NewModulePage() {
     const params = useParams();
+    const projectId = params.id as string;
     const [selectedSection, setSelectedSection] = useState<'details' | 'repository'>('details');
 
     const handleSectionChange = (section: 'details' | 'repository') => {
@@ -17,9 +19,11 @@ export default function NewModulePage() {
             selectedSection={selectedSection} 
             onSectionChange={handleSectionChange}
             isNew={true}
+            projectId={projectId}
         >
             <ModuleDetails 
-                projectId={params.id as string}
+                projectId={projectId}
+                moduleId="new"
                 isNew 
             />
         </ModuleLayoutBase>

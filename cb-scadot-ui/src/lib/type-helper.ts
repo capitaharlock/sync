@@ -57,7 +57,7 @@ export interface PathDetailItem {
    parameters: Parameter[];
    get?: Operation;
    post?: Operation;
-   [key: string]: any; // for additional future properties
+   [key: string]: unknown; // for additional future properties
 }
 
 export interface Parameter {
@@ -86,7 +86,7 @@ export interface RequestBody {
 }
 
 export interface Content {
-   [key: string]: any;
+   [key: string]: unknown;
 }
 
 export interface Responses {
@@ -99,10 +99,10 @@ export interface Response {
 }
 
 export interface ApiPayload {
-   [key: string]: any;
+   [key: string]: unknown;
 }
 export interface ApiTestResults {
-   [key: string]: any;
+   [key: string]: unknown;
 }
 
 export interface WalletDetails {
@@ -110,14 +110,14 @@ export interface WalletDetails {
    network: string;
 }
 export interface Project {
-   id: any;
+   id: number;
    name: string;
    networkName?: string;
    description: string;
    ado_id: string;
    status: string;
    visibility: string;
-   user_id: any;
+   user_id: number;
    date_time_created: string;
    date_time_modified: string;
    dateCreated?: string;
@@ -126,7 +126,7 @@ export interface Project {
    user?: User;
 }
 export interface User {
-   id: any;
+   id: unknown;
    email: string;
    name: string;
    date_time_created: string;

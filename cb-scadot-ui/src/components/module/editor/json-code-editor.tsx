@@ -3,8 +3,7 @@ import { useState } from 'react';
 import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs';
 import 'prismjs/components/prism-yaml';
-import 'prismjs/themes/prism-tomorrow.css'; // Use a better theme
-import YAML from 'yaml';
+import 'prismjs/themes/prism-tomorrow.css';
 
 interface JsonEditorProps {
     onCodeChange: (newCode: string) => void;

@@ -40,7 +40,7 @@ export default function ModuleTest({ projectId, moduleId }: ModuleTestProps) {
     return (
         <>
             <div>Documentation here + Testing features</div>
-            <div>This depends on user permission's. In this MVP, we allow everyone to test.</div>
+            <div>This depends on user permission&#39;s. In this MVP, we allow everyone to test.</div>
 
             <div style={{ marginTop: '20px' }}>
                 <button

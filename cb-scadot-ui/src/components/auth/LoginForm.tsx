@@ -84,7 +84,7 @@ export default function LoginForm() {
                 </div>
             </div>
             <div className={styles.linkText}>
-                Don't have an account?{' '}
+                Don&#39;t have an account?{' '}
                 <span
                     onClick={() => router.push('/auth/register')}
                     className={styles.link}

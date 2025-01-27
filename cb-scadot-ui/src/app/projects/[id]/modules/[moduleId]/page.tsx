@@ -15,15 +15,23 @@ interface ModuleData {
     date_time_created?: string;
 }
 
-export default function ModuleDetailsPage({ 
-    params 
-}: { 
-    params: { id: string; moduleId: string } 
-}) {
+interface ModuleDetailsPageProps {
+    params: Promise<{
+        id: string;
+        moduleId: string;
+    }>;
+}
+
+export default function ModuleDetailsPage({ params }: ModuleDetailsPageProps) {
     const pathname = usePathname();
     const isNewModule = pathname.endsWith('/new');
     const [selectedSection, setSelectedSection] = useState<'details' | 'repository'>('details');
     const [moduleData, setModuleData] = useState<ModuleData | undefined>();
+    const [error, setError] = useState<string | null>(null);
+
+    const unwrappedParams = React.use(params);
+    const projectId = unwrappedParams.id;
+    const moduleId = unwrappedParams.moduleId;
 
     useEffect(() => {
         const fetchModuleData = async () => {
@@ -34,8 +42,8 @@ export default function ModuleDetailsPage({
 
                     const data = await moduleService.getById(
                         token,
-                        Number(params.id),
-                        Number(params.moduleId)
+                        Number(projectId),
+                        Number(moduleId)
                     );
                     
                     setModuleData({
@@ -47,36 +55,39 @@ export default function ModuleDetailsPage({
                         date_time_created: new Date().toISOString()
                     });
                 } catch (error) {
+                    setError(error instanceof Error ? error.message : 'Failed to fetch module');
                     console.error('Error fetching module:', error);
                 }
             }
         };
 
         fetchModuleData();
-    }, [params.id, params.moduleId, isNewModule]);
+    }, [projectId, moduleId, isNewModule]);
 
     const handleSectionChange = (section: 'details' | 'repository') => {
         setSelectedSection(section);
     };
+
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <ModuleLayoutBase 
             selectedSection={selectedSection} 
             onSectionChange={handleSectionChange}
             isNew={isNewModule}
-            projectId={params.id}
+            projectId={projectId}
             moduleData={moduleData}
         >
             {selectedSection === 'details' ? (
                 <ModuleDetails 
-                    projectId={params.id} 
-                    moduleId={params.moduleId}
+                    projectId={projectId} 
+                    moduleId={moduleId}
                     isNew={isNewModule}
                 />
             ) : (
                 <ModuleRepository 
-                    projectId={params.id}
-                    moduleId={params.moduleId}
+                    projectId={projectId}
+                    moduleId={moduleId}
                 />
             )}
         </ModuleLayoutBase>

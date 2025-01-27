@@ -12,7 +12,7 @@ const NextStepBtn: React.FC<ButtonProps> = ({ stepNumber }) => {
         if (!createProjectProgress.currentStep) {
             createProjectProgress.currentStep = 1;
         }
-        var nextStep = stepNumber + 1;
+        const nextStep = stepNumber + 1;
         const radioIndx = nextStep > 1 ? nextStep-1 : 0;
         console.log("current: ", createProjectProgress.currentStep, " nextStep: ", nextStep, " radio: ", radioIndx);
         dispatch(setCreateProjectProgress({currentStep: nextStep, radioIndex : radioIndx}));

@@ -26,8 +26,8 @@ export const projectSlice = createSlice({
     },
 });
 
-const transformProjectData = (data: any): Array<Project> => {
-    for (let project of data) {
+const transformProjectData = (data: unknown): Array<Project> => {
+    for (const project of data) {
         project.dateCreated = formatDate(project.date_time_created);
         project.isPublic =  transformVisibility(project.visibility);
     }

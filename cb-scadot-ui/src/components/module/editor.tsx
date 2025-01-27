@@ -1,11 +1,11 @@
 import styles from './index.module.css'
 import JsonCodeEditor from './editor/json-code-editor';
-import { useAppSelector } from '@/lib/reduxHooks';
+//import { useAppSelector } from '@/lib/reduxHooks';
 
 export default function ModuleEditor() {
-    const { specs } = useAppSelector(state => state.apiTesting);
+    //const { specs } = useAppSelector(state => state.apiTesting);
     const handleCodeChange = (code: string) => {
-        console.log("update code ");
+        console.log("update code " + code);
     }
     return (
         <div className={styles.right}>

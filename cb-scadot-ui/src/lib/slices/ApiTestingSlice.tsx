@@ -8,8 +8,8 @@ export interface AppState {
     specs: ScOpenApiSpec;
     testResults: ApiTestResults;
     wallet: {
-        provider: any;
-        signer: any;
+        provider: unknown;
+        signer: unknown;
     }
 }
 const initialState: AppState = {
@@ -32,7 +32,7 @@ const initialState: AppState = {
 
 export const fetchApiSpecs = createAsyncThunk(
     'app/fetchApiSpecs',
-    async (args: { requestId: string }) => {
+    async () => {
         console.log("fetchApiSpecs called ...");
         return dummySpecs;
         // const res = await request({

@@ -1,7 +1,7 @@
 repo:
 https://github.com/capitaharlock/demo-openapi.git
 
-Github PAT repo demo openapi:
+
 
 ## Steps to Generate a PAT:
 Go to your GitHub account settings.

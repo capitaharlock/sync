@@ -1,49 +1,64 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
 import ModuleEditor from '@/components/module/editor/module-editor';
-import ModuleHeader from '@/components/module/header/module-header';
 import { moduleService } from '@/services/modules';
 
 interface EditorPageProps {
-    params: {
+    params: Promise<{
         id: string;
         moduleId: string;
-    };
+    }>;
 }
 
 export default function ModuleEditorPage({ params }: EditorPageProps) {
-    const [moduleData, setModuleData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    const unwrappedParams = React.use(params);
+    const projectId = unwrappedParams.id;
+    const moduleId = unwrappedParams.moduleId;
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setError(null);
                 const token = localStorage.getItem('token');
-                if (!token) throw new Error('No token found');
+                if (!token) {
+                    setError('Authentication token not found');
+                    return;
+                }
 
-                const module = await moduleService.getById(
+                const moduleResponse = await moduleService.getById(
                     token, 
-                    Number(params.id), 
-                    Number(params.moduleId)
+                    Number(projectId), 
+                    Number(moduleId)
                 );
-                setModuleData(module);
-            } catch (error) {
-                console.error('Failed to fetch data:', error);
+                
+                if (!moduleResponse) {
+                    setError('Module not found');
+                    return;
+                }
+                
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Failed to fetch module data');
+                console.error('Failed to fetch data:', err);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, [params.id, params.moduleId]);
+    }, [projectId, moduleId]);
 
     if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <div style={{ width: '100%', height: '100%' }}>
             <ModuleEditor 
-                projectId={params.id} 
-                moduleId={params.moduleId} 
+                projectId={projectId} 
+                moduleId={moduleId} 
             />
         </div>
     );

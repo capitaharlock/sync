@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import JsonCodeEditor from '@/components/module/editor/json-code-editor';
 import styles from '@/components/module/styles/module.module.css';
-// @ts-expect-error: SwaggerUI types are not available
+// @ts-ignore
 import SwaggerUI from 'swagger-ui-react';
 import 'swagger-ui-react/swagger-ui.css';
 import YAML from 'yaml';
@@ -32,12 +32,16 @@ export default function ModuleEditor({ projectId, moduleId }: ModuleEditorProps)
                     throw new Error('No authentication token found');
                 }
 
+                // Fetch module data
                 const moduleData = await moduleService.getById(token, Number(projectId), Number(moduleId));
-                if (moduleData?.content_source) {
-                    handleCodeChange(moduleData.content_source);
-                } else {
-                    handleCodeChange(initialSpec);
+                
+                // If there's no module data, use the initial spec
+                if (!moduleData) {
+                    throw new Error('Failed to fetch module data');
                 }
+
+                // Always use the initial spec since content_source is removed
+                handleCodeChange(initialSpec);
             } catch (error) {
                 console.error('Failed to fetch module specification:', error);
                 setError(error instanceof Error ? error.message : 'Failed to fetch module data');
@@ -80,7 +84,7 @@ export default function ModuleEditor({ projectId, moduleId }: ModuleEditorProps)
                         <div className={styles.error}>{error}</div>
                     )}
                     {spec ? (
-                        // @ts-expect-error: SwaggerUI component lacks proper TypeScript definitions
+                        // @ts-ignore
                         <SwaggerUI spec={spec} />
                     ) : (
                         <div>Enter valid OpenAPI specification</div>

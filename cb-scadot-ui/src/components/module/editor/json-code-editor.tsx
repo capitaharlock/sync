@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs';
@@ -7,6 +8,7 @@ import 'prismjs/themes/prism-tomorrow.css';
 
 interface JsonEditorProps {
     onCodeChange: (newCode: string) => void;
+    initialValue: string;
 }
 
 const initialSpec = `openapi: 3.0.3
@@ -32,8 +34,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Pet'`;
 
-const JsonCodeEditor: React.FC<JsonEditorProps> = ({ onCodeChange }) => {
-    const [code, setCode] = useState<string>(initialSpec);
+const JsonCodeEditor: React.FC<JsonEditorProps> = ({ onCodeChange, initialValue }) => {
+    const [code, setCode] = useState<string>(initialValue);
 
     const handleCodeChange = (newCode: string) => {
         setCode(newCode);

@@ -1,3 +1,5 @@
+// File: src/components/module/execute.tsx
+
 import { useEffect, useState } from 'react';
 import styles from './index.module.css'
 import { Badge } from '@appkit4/react-components/badge';
@@ -14,14 +16,15 @@ export default function ModuleExecutePanel() {
     const [selectedItemSpecs, setSelectedItemSpecs] = useState<PathDetailItem | null>(null);
 
     useEffect(() => {
-        dispatch(fetchApiSpecs({requestId: '1'}));
-    }, []);
+        dispatch(fetchApiSpecs());
+    }, [dispatch]);
 
     const handleItemClick = (item: DisplayItem) => {
         setSelectedItem(item);
         setIsPanelOpen(true);
         setSelectedItemSpecs(specs.paths[item.path]);
     };
+
     const handleClosePanel = () => {
         setIsPanelOpen(false);
         setSelectedItem(null);
@@ -32,22 +35,32 @@ export default function ModuleExecutePanel() {
     
     return (
         <div className={styles.right}>
-            <ItemListing isOpen={isPanelOpen} displayItems={displayItems} onClick={handleItemClick} />
-            <SlidingPanel isOpen={isPanelOpen} onClose={handleClosePanel} displayItem={selectedItem} itemSpecs={selectedItemSpecs} />
+            <ItemListing 
+                isOpen={isPanelOpen} 
+                displayItems={displayItems} 
+                onClick={handleItemClick} 
+            />
+            <SlidingPanel 
+                isOpen={isPanelOpen} 
+                onClose={handleClosePanel} 
+                displayItem={selectedItem} 
+                itemSpecs={selectedItemSpecs} 
+            />
         </div>
     )
 }
+
 type ListingProps = {
     isOpen: boolean;
     displayItems: DisplayDetails;
     onClick: (item: DisplayItem) => void;
 };
+
 const ItemListing: React.FC<ListingProps> = ({isOpen, displayItems, onClick}) => {
-    {
-        if (isOpen) {
-            return null;
-        }
+    if (isOpen) {
+        return null;
     }
+
     return (
         <div className={styles.frame835558412}>
             <div className={styles.frame835558428}>
@@ -56,15 +69,12 @@ const ItemListing: React.FC<ListingProps> = ({isOpen, displayItems, onClick}) =>
                         <div key={item.path} className={styles.listItemContainer}>
                             <div className={styles.listItem} onClick={() => onClick(item)}>
                                 <div className={styles.listItemBadgeContainer}>
-                                    <Badge value={item.methodName}  type={'primary'} />
+                                    <Badge value={item.methodName} type={'primary'} />
                                 </div>
                                 <div className={styles.listItemPath}>{item.path}</div>
                                 <span className={styles.listItemSpacer}></span>
-                                <div className={styles.listItemSummary} >{item.summary}</div>
+                                <div className={styles.listItemSummary}>{item.summary}</div>
                             </div>
-                            {/* <div className={styles.lockContainer}>
-                                <span className="Appkit4-icon icon-lockclosed-locked-outline ap-font-32 ap-container-32"></span>
-                            </div> */}
                         </div>
                     ))}
                 </div>
@@ -72,29 +82,30 @@ const ItemListing: React.FC<ListingProps> = ({isOpen, displayItems, onClick}) =>
         </div>
     )
 };
-function parseOpenApiSpec(spec: ScOpenApiSpec) {
+
+function parseOpenApiSpec(spec: ScOpenApiSpec): DisplayDetails {
     const details: DisplayDetails = {
         info: spec.info,
         items: []
     }
+    
     for (const path in spec.paths) {
-        let item: DisplayItem = {
-            methodName: "",
-            path: "",
-            summary: ""
-        }
         const pathItem = spec.paths[path];
         if (pathItem.get) {
-            item.methodName = "GET";
-            item.path = path;
-            item.summary = pathItem.get.summary;
+            details.items.push({
+                methodName: "GET",
+                path: path,
+                summary: pathItem.get.summary
+            });
         }
         if (pathItem.post) {
-            item.methodName = "POST";
-            item.path = path;
-            item.summary = pathItem.post.summary;
+            details.items.push({
+                methodName: "POST",
+                path: path,
+                summary: pathItem.post.summary
+            });
         }
-        details.items.push(item);
     }
+    
     return details;
 }

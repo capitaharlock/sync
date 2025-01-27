@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Input, Select } from '@appkit4/react-components';
 import { Button } from '@appkit4/react-components/button';
 import styles from '@/components/project/styles/project.module.css';
-import { repositoryService } from '@/services/repositories';
+import { repositoryService, Repository } from '@/services/repositories';
 
 interface ModuleRepositoryProps {
     projectId: string;
@@ -39,12 +39,11 @@ export default function ModuleRepository({
                 Number(moduleId)
             );
 
-            // If we get a response, set both the ID and form data
             if (repository) {
                 setRepositoryId(repository.id);
                 setFormData({
-                    provider: repository.repository_provider || '',
-                    url: repository.repository_url || '',
+                    provider: repository.provider || '',
+                    url: repository.url || '',
                     access_token: repository.access_token || '',
                     updated_at: repository.updated_at
                 });
@@ -70,10 +69,10 @@ export default function ModuleRepository({
         }));
     };
 
-    const handleSelectChange = (value: string) => {
+    const handleSelectChange = (value: unknown) => {
         setFormData(prev => ({
             ...prev,
-            provider: value
+            provider: String(value)
         }));
     };
 
@@ -91,8 +90,8 @@ export default function ModuleRepository({
             if (!token) throw new Error('No token found');
 
             const data = {
-                repository_provider: formData.provider,
-                repository_url: formData.url,
+                provider: formData.provider,
+                url: formData.url,
                 access_token: formData.access_token
             };
 
@@ -103,7 +102,6 @@ export default function ModuleRepository({
                 data
             );
 
-            // Refresh repository data after save to get the updated timestamp
             await fetchRepository();
         } catch (err) {
             console.error('Error saving repository:', err);
@@ -191,27 +189,26 @@ export default function ModuleRepository({
                 </div>
 
                 <div className={`${styles.infoBox} mt-6 p-4 border border-gray-600 rounded-lg bg-gray-800`}>
-    <div className={`flex items-center gap-2 mb-3`}>
-        <span role="img" aria-label="info" className="text-xl">ℹ️</span>
-        <strong>Steps to Generate a PAT</strong>
-    </div>
-    <ol className="list-decimal pl-5 space-y-2">
-        <li>Go to your GitHub account settings.</li>
-        <li>Navigate to <strong>Developer settings &gt; Personal access tokens &gt; Tokens (classic)</strong>.</li>
-        <li>Click <strong>Generate new token</strong>.</li>
-        <li>
-            Select the appropriate scopes (permissions) for your use case. For example:
-            <ul className="list-disc pl-5 mt-2 space-y-1">
-                <li><code className="bg-gray-700 px-2 py-0.5 rounded text-sm font-mono">repo</code> for full control of private repositories.</li>
-                <li><code className="bg-gray-700 px-2 py-0.5 rounded text-sm font-mono">public_repo</code> for access to public repositories.</li>
-                <li><code className="bg-gray-700 px-2 py-0.5 rounded text-sm font-mono">workflow</code> for managing GitHub Actions.</li>
-            </ul>
-        </li>
-        <li>Click <strong>Generate token</strong>.</li>
-        <li>Copy the token and save it securely (you won&#39;t be able to see it again).</li>
-    </ol>
-</div>    
-
+                    <div className={`flex items-center gap-2 mb-3`}>
+                        <span role="img" aria-label="info" className="text-xl">ℹ️</span>
+                        <strong>Steps to Generate a PAT</strong>
+                    </div>
+                    <ol className="list-decimal pl-5 space-y-2">
+                        <li>Go to your GitHub account settings.</li>
+                        <li>Navigate to <strong>Developer settings &gt; Personal access tokens &gt; Tokens (classic)</strong>.</li>
+                        <li>Click <strong>Generate new token</strong>.</li>
+                        <li>
+                            Select the appropriate scopes (permissions) for your use case. For example:
+                            <ul className="list-disc pl-5 mt-2 space-y-1">
+                                <li><code className="bg-gray-700 px-2 py-0.5 rounded text-sm font-mono">repo</code> for full control of private repositories.</li>
+                                <li><code className="bg-gray-700 px-2 py-0.5 rounded text-sm font-mono">public_repo</code> for access to public repositories.</li>
+                                <li><code className="bg-gray-700 px-2 py-0.5 rounded text-sm font-mono">workflow</code> for managing GitHub Actions.</li>
+                            </ul>
+                        </li>
+                        <li>Click <strong>Generate token</strong>.</li>
+                        <li>Copy the token and save it securely (you won&#39;t be able to see it again).</li>
+                    </ol>
+                </div>    
             </div>
         </div>
     );

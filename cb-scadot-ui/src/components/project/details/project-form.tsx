@@ -8,6 +8,16 @@ import { useRouter } from 'next/navigation';
 import ProjectHeader from './project-header';
 import ProjectTeamMembers from './project-team-members';
 
+interface ProjectData {
+    name: string;
+    description: string;
+    status: 'active';
+    visibility: 'public' | 'private';
+    ado_id: string;
+}
+
+type SelectValue = string | number | (string | number)[];
+
 export default function ProjectForm({
     projectId,
     isNew,
@@ -25,9 +35,7 @@ export default function ProjectForm({
         isPublic: '',
         description: '',
     });
-    const [validationErrors, setValidationErrors] = useState<
-        Record<string, string>
-    >({});
+    const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
     const isProjectCreated = !!projectId;
 
@@ -100,10 +108,10 @@ export default function ProjectForm({
         }
     };
 
-    const handleSelectChange = (value: string) => {
+    const handleSelectChange = (value: SelectValue) => {
         setFormData((prev) => ({
             ...prev,
-            isPublic: value,
+            isPublic: String(value),
         }));
 
         if (validationErrors.isPublic) {
@@ -139,19 +147,19 @@ export default function ProjectForm({
         if (!validateForm()) {
             return;
         }
-
+    
         setIsLoading(true);
         setError('');
-
+    
         try {
-            const projectData = {
+            const projectData: ProjectData = {
                 name: formData.name,
                 description: formData.description,
-                status: 'active' as const,
-                visibility: formData.isPublic === 'Yes' ? 'public' : 'private' as const,
+                status: 'active',
+                visibility: formData.isPublic === 'Yes' ? 'public' : 'private',
                 ado_id: formData.ado_id,
             };
-
+    
             let response;
             if (projectId) {
                 response = await projectService.update(
@@ -161,7 +169,7 @@ export default function ProjectForm({
             } else {
                 response = await projectService.create(projectData);
             }
-
+    
             console.log('Project saved successfully:', response);
             router.push(`/projects/${response.id}`);
         } catch (err) {
@@ -190,7 +198,7 @@ export default function ProjectForm({
                         title='Project Name'
                         required={true}
                         allowClear={true}
-                        onChange={(value, event) =>
+                        onChange={(value: string, event: React.ChangeEvent<HTMLInputElement>) =>
                             handleInputChange(value, event)
                         }
                         value={formData.name}
@@ -209,7 +217,7 @@ export default function ProjectForm({
                         name='ado_id'
                         title='ADO ID'
                         allowClear={true}
-                        onChange={(value, event) =>
+                        onChange={(value: string, event: React.ChangeEvent<HTMLInputElement>) =>
                             handleInputChange(value, event)
                         }
                         value={formData.ado_id}
@@ -242,7 +250,7 @@ export default function ProjectForm({
                         title='Description of the project. (purpose, goals, etc)'
                         required={true}
                         maxLength={420}
-                        onChange={(value, event) =>
+                        onChange={(value: string, event: React.ChangeEvent<HTMLTextAreaElement>) =>
                             handleTextAreaChange(value, event)
                         }
                         value={formData.description}

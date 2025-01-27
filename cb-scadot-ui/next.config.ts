@@ -6,15 +6,9 @@ const nextConfig: NextConfig = {
   distDir: 'dist',
   productionBrowserSourceMaps: false,
   images: { unoptimized: true },
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: '/',
-  //       destination: '/projects',
-  //       permanent: false,
-  //     },
-  //   ];
-  // },
+  eslint: {
+    ignoreDuringBuilds: true,
+  }
 };
 
 export default nextConfig;

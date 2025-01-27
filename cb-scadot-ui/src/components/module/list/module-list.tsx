@@ -1,3 +1,5 @@
+// File: src/components/module/list/module-list.tsx
+
 'use client';
 import styles from '@/components/project/styles/project.module.css';
 import CreateNewModuleBtn from '@/components/buttons/create-new-module-btn';
@@ -27,8 +29,12 @@ interface Module {
     framework_id: number;
 }
 
+interface ModuleWithPublicValue extends Module {
+    publicValue: string;
+}
+
 const ModuleList = ({ projectId }: { projectId: string }) => {
-    const [modules, setModules] = useState<Module[]>([]);
+    const [modules, setModules] = useState<ModuleWithPublicValue[]>([]);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
     const { isLoggedIn } = useAuth();

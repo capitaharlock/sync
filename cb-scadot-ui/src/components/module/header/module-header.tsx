@@ -1,10 +1,27 @@
+// File: src/components/module/header/module-header.tsx
+
 'use client';
 import { useRouter, usePathname } from 'next/navigation';
 import styles from '@/components/module/styles/module.module.css';
 import { Badge, Button } from '@appkit4/react-components';
 import { formatDate } from '@/utils/transformUtil';
 
-export default function ModuleHeader({ projectName, projectId, moduleData }) {
+interface ModuleData {
+    id?: number;
+    name?: string;
+    status?: string;
+    visibility?: string;
+    networkName?: string;
+    date_time_created?: string;
+}
+
+interface ModuleHeaderProps {
+    projectName?: string;
+    projectId: string;
+    moduleData?: ModuleData;
+}
+
+export default function ModuleHeader({ projectName, projectId, moduleData }: ModuleHeaderProps) {
     const router = useRouter();
     const pathname = usePathname();
     
@@ -12,7 +29,7 @@ export default function ModuleHeader({ projectName, projectId, moduleData }) {
     console.log('[ModuleHeader] Received moduleData:', moduleData);
     console.log('[ModuleHeader] Module ID exists:', Boolean(moduleData?.id));
 
-    const handleNavigation = (path) => {
+    const handleNavigation = (path: string) => {
         if (!moduleData?.id) {
             console.log('[ModuleHeader] No navigation - missing moduleId');
             return;

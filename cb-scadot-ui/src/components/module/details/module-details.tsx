@@ -145,12 +145,14 @@ export default function ModuleDetails({
         }
     };
 
-    const handleSelectChange = (field: string, value: string) => {
+    const handleSelectChange = (field: string, value: unknown) => {
+        const selectedValue = Array.isArray(value) ? value[0] : value;
+        
         setFormData((prev) => ({
             ...prev,
-            [field]: value,
+            [field]: String(selectedValue), 
         }));
-
+    
         if (validationErrors[field]) {
             setValidationErrors((prev) => ({
                 ...prev,

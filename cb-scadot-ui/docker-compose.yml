@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: scadot-ui
+    build:
+      context: "."
+      dockerfile: Dockerfile
+      secrets:
+        - "ARTIFACTORY_USERNAME"
+        - "ARTIFACTORY_API_KEY"
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: $(NEXT_PUBLIC_API_URL)
+
+secrets:
+  ARTIFACTORY_USERNAME:
+    environment: "ARTIFACTORY_USERNAME"
+  ARTIFACTORY_API_KEY:
+    environment: "ARTIFACTORY_API_KEY"
+

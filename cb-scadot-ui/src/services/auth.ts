@@ -1,5 +1,5 @@
 const API_URL =
-    process.env.NEXT_PUBLIC_API_URL || 'https://scadot.api.proars.com';
+    process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 export const authService = {
     async login(data: { email: string; password: string }): Promise<{ token: string }> {

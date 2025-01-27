@@ -44,7 +44,7 @@ After installing Appkit, other dependencies can be installed with the usual `npm
 
 ### Running the App on Local
 1. create a .env file and copy the contents from example.env file.
-    - update the .env file with correct login token from "https://scadot.api.proars.com"
+    - update the .env file with correct login token from "http://localhost:8080"
     - this is a temp solution till the login functionality is working.
 2. Run the server:
 `npm run dev`

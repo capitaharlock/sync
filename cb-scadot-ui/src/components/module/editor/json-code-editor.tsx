@@ -11,29 +11,6 @@ interface JsonEditorProps {
     initialValue: string;
 }
 
-const initialSpec = `openapi: 3.0.3
-paths:
-  /pet:
-    put:
-      tags:
-        - pet
-      summary: Update an existing pet
-      description: Update an existing pet by Id
-      operationId: updatePet
-      requestBody:
-        description: Update an existent pet in the store
-        required: true
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'          
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'`;
-
 const JsonCodeEditor: React.FC<JsonEditorProps> = ({ onCodeChange, initialValue }) => {
     const [code, setCode] = useState<string>(initialValue);
 

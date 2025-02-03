@@ -57,6 +57,8 @@ export interface PathDetailItem {
    parameters: Parameter[];
    get?: Operation;
    post?: Operation;
+   put?: Operation;
+   delete?: Operation;
    [key: string]: unknown; // for additional future properties
 }
 

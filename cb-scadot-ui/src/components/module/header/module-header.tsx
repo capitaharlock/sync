@@ -1,10 +1,7 @@
-// File: src/components/module/header/module-header.tsx
-
 'use client';
 import { useRouter, usePathname } from 'next/navigation';
 import styles from '@/components/module/styles/module.module.css';
 import { Badge, Button } from '@appkit4/react-components';
-import { formatDate } from '@/utils/transformUtil';
 
 interface ModuleData {
     id?: number;
@@ -28,6 +25,7 @@ export default function ModuleHeader({ projectName, projectId, moduleData }: Mod
     console.log('[ModuleHeader] Current pathname:', pathname);
     console.log('[ModuleHeader] Received moduleData:', moduleData);
     console.log('[ModuleHeader] Module ID exists:', Boolean(moduleData?.id));
+    console.log('[ModuleHeader] Project Name:', projectName);
 
     const handleNavigation = (path: string) => {
         if (!moduleData?.id) {

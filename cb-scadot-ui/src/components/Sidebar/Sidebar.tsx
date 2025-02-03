@@ -42,13 +42,8 @@ const NavigationSidebar = () => {
         }
     ];
 
-    const [collapsed, setCollapsed] = React.useState(false);
     const [selectedKey, setSelectedKey] = React.useState('0');
 
-    const onCollapseEvent = (collapsed: boolean, event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
-        setCollapsed(collapsed);
-    }
- 
     return (
         <aside className="sidebar">
             <Navigation
@@ -58,14 +53,12 @@ const NavigationSidebar = () => {
                 className={styles.leftnav}
                 navList={navList}
                 showTooltip={true}
-                collapsed={collapsed}
                 selectedKey={selectedKey}
                 defaultOpenKeys={[]}
-                onItemClick={(event: any, item: NavigationItem, key: string) => {
+                onItemClick={(event, item: NavigationItem, key: string) => {
                     setSelectedKey(key);
                     handleClick(item);
                 }}
-                // onClickCollapseEvent={onCollapseEvent}
                 >
             </Navigation>
         </aside>

@@ -7,6 +7,7 @@ import {
     BreadcrumbItem,
 } from '@appkit4/react-components/breadcrumb';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface ProjectHeaderProps {
     projectId?: string;
@@ -37,9 +38,7 @@ export default function ProjectHeader({
                 <div className={styles.breadcrumbSection}>
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <a href='/projects' tabIndex={0}>
-                                Projects
-                            </a>
+                            <Link href='/projects' tabIndex={0}/>
                         </BreadcrumbItem>
                         <BreadcrumbItem>
                             <span tabIndex={1}>

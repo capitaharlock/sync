@@ -1,4 +1,25 @@
 services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    # environment:
+    #   - DB_HOST=${DB_HOST}
+    #   - DB_PORT=${DB_PORT}
+    #   - DB_USER=${DB_USER}
+    #   - DB_PASSWORD=${DB_PASSWORD}
+    #   - DB_NAME=${DB_NAME}
+    #   - DB_SSLMODE=${DB_SSLMODE}
+    #   - JWT_SECRET=${JWT_SECRET}
+    #   - SERVER_ADDRESS=${SERVER_ADDRESS}
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - pwc-network
   db:
     image: postgres:15-alpine
     ports:

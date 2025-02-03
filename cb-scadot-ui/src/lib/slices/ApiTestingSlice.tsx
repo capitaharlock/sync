@@ -32,8 +32,8 @@ const initialState: AppState = {
 
 export const fetchApiSpecs = createAsyncThunk(
     'app/fetchApiSpecs',
-    async () => {
-        console.log("fetchApiSpecs called ...");
+    async ({ projectId, moduleId }: { projectId: string, moduleId: string }) => {
+        console.log("fetchApiSpecs called ...  projectid: ", projectId, " moduleId: ", moduleId);
         return dummySpecs;
         // const res = await request({
         //   url: `/apis/specs`,

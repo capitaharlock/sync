@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Input, Select } from '@appkit4/react-components';
 import { Button } from '@appkit4/react-components/button';
 import styles from '@/components/project/styles/project.module.css';
-import { repositoryService, Repository } from '@/services/repositories';
+import { repositoryService } from '@/services/repositories';
 
 interface ModuleRepositoryProps {
     projectId: string;

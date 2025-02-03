@@ -55,6 +55,7 @@ export default function ProjectForm({
                         description: project.description,
                     });
                 } catch (err) {
+                    console.error('Error fetching project: ', err);
                     setError('Failed to fetch project data');
                 } finally {
                     setIsLoading(false);

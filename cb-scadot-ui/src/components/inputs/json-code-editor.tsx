@@ -1,6 +1,5 @@
 // RJJ-TODO need to delete this 
 
-import { useState } from "react";
 import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs';
 import 'prismjs/components/prism-json';
@@ -8,23 +7,22 @@ import 'prismjs/themes/prism.css';
 
 interface JsonEditorProps {
     onCodeChange: (newCode: string) => void;
+    specs: string;
     // onCodeChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const JsonCodeEditor: React.FC<JsonEditorProps> = ( { onCodeChange }) => {
-    const [code, setCode] = useState<string>(JSON.stringify({ key: "value" }, null, 2));
-
+const JsonCodeEditor: React.FC<JsonEditorProps> = ( { onCodeChange, specs }) => {
+    
     // const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     //     setCode(e.target.value);
     //     onCodeChange(e);
     // };
     const handleCodeChange = (newCodeValue: string) => {
-        setCode(newCodeValue);
         onCodeChange(newCodeValue);
     };
 
     return (
         <Editor
-            value={code}
+            value={specs}
             onValueChange={handleCodeChange}
             highlight={code => highlight(code, languages.json, 'json')}
             style={{

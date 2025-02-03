@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import JsonCodeEditor from '@/components/module/editor/json-code-editor';
 import styles from '@/components/module/styles/module.module.css';
-// @ts-ignore
 import SwaggerUI from 'swagger-ui-react';
 import 'swagger-ui-react/swagger-ui.css';
 import YAML from 'yaml';
@@ -84,7 +83,6 @@ export default function ModuleEditor({ projectId, moduleId }: ModuleEditorProps)
                         <div className={styles.error}>{error}</div>
                     )}
                     {spec ? (
-                        // @ts-ignore
                         <SwaggerUI spec={spec} />
                     ) : (
                         <div>Enter valid OpenAPI specification</div>

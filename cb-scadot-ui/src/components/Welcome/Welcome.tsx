@@ -7,7 +7,7 @@ const Welcome = () => {
     const [isMounted, setIsMounted] = useState(false);
     useEffect(() => {
         setIsMounted(true);
-    })
+    },[]);
     return isMounted ? (
         <div className={styles.tblbackground}>
             <div className={styles.container}>

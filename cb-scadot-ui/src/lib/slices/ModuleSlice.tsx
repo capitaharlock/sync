@@ -91,13 +91,8 @@ export const createModule = createAsyncThunk(
 export const fetchModules = createAsyncThunk(
   'app/fetchModules',
   
-  async (args: { projectId: string }) => {
-    const url = `/projects/${args.projectId}/modules`;
+  async () => {
     return dummyModuleList;
-    // const res = await request({
-    //   url: url,
-    // });
-    // return res;
   }
   
 );

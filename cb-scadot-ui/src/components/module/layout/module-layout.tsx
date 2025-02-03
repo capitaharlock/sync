@@ -26,6 +26,7 @@ export default function ModuleLayoutBase({
     projectId,
     moduleData
 }: ModuleLayoutBaseProps) {
+    console.log('[ModuleLayoutBase] moduleData:', moduleData, "project id:", projectId);
     return (
         <div className={styles.mainContainer}>
             <div className={styles.twoColumnLayout}>

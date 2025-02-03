@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Project } from '../type-helper';
+import { Project, PublicStatus } from '../type-helper';
 import request from '../request';
 import { formatDate, transformVisibility } from '@/utils/transformUtil';
 
@@ -26,10 +26,10 @@ export const projectSlice = createSlice({
     },
 });
 
-const transformProjectData = (data: any): Array<Project> => {
+const transformProjectData = (data: Array<Project>): Array<Project> => {
     for (const project of data) {
         project.dateCreated = formatDate(project.date_time_created);
-        project.isPublic =  transformVisibility(project.visibility);
+        project.isPublic =  transformVisibility(project.visibility) as PublicStatus;
     }
     return data;
 }

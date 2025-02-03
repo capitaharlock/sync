@@ -17,7 +17,7 @@ type SlidingPanelProps = {
 const SlidingPanel: React.FC<SlidingPanelProps> = ({ isOpen, onClose, displayItem, itemSpecs }) => {
     const dispatch = useAppDispatch();
     const [formData, setFormData] = useState<{ [key: string]: string }>({});
-    const [testResults, setTestResults] = useState<any | null>();
+    const [testResults, setTestResults] = useState<unknown | null>();
     const { executionStatus} = useAppSelector(state => state.apiTesting);
     const [resetTrigger, setResetTrigger] = useState(false);
     useEffect(() => {
